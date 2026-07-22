@@ -1,0 +1,9 @@
+version: "3"
+
+tasks:
+  watch:ts:
+    cmd: npx tsc --watch
+  watch:sass:
+    cmd: npx sass --watch src/styles:dist
+  dev:
+    deps: [watch:ts, watch:sass]

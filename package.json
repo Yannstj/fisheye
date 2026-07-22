@@ -1,0 +1,25 @@
+{
+  "name": "front-end-fisheye",
+  "version": "1.0.0",
+  "description": "Rien à installer ici, il suffit d'ouvrir le fichier `index.html`.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yannstj/fisheye.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Yannstj/fisheye/issues"
+  },
+  "homepage": "https://github.com/Yannstj/fisheye#readme",
+  "devDependencies": {
+    "sass": "^1.101.3",
+    "typescript": "^7.0.2"
+  }
+}
