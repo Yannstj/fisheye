@@ -26,7 +26,20 @@ export class Photographer implements PhotographerData {
     this.price = data.price;
     this.portrait = data.portrait;
   }
+
+  get portraitPath(): string {
+    return `assets/photographers/Photographers_Photos/${this.portrait}`;
+  }
+
   get fullLocation(): string {
     return `${this.city}, ${this.country}`;
+  }
+
+  get fullPrice(): string {
+    return `${this.price}€/jour`;
+  }
+
+  get altDescription(): string {
+    return `Portrait du photographe ${this.name}`;
   }
 }

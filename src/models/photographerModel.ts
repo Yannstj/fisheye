@@ -1,6 +1,6 @@
 import { Photographer, PhotographerData } from "./photographer.js";
 
-async function getPhotographers(): Promise<Photographer[]> {
+export async function getPhotographers(): Promise<Photographer[]> {
   const url: string = "/data/photographers.json";
   try {
     const response = await fetch(url);
