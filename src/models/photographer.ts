@@ -1,4 +1,4 @@
-interface PhotographerData {
+export interface PhotographerData {
   name: string;
   id: number;
   city: string;
@@ -8,7 +8,7 @@ interface PhotographerData {
   portrait: string;
 }
 
-class Photographer implements PhotographerData {
+export class Photographer implements PhotographerData {
   name: string;
   id: number;
   city: string;
