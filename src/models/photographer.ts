@@ -38,8 +38,4 @@ export class Photographer implements PhotographerData {
   get fullPrice(): string {
     return `${this.price}€/jour`;
   }
-
-  get altDescription(): string {
-    return `Portrait du photographe ${this.name}`;
-  }
 }
