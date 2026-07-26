@@ -1,8 +1,12 @@
 import { Photographer } from "../models/photographer.js";
 
-function createParagraph(text: string): HTMLParagraphElement {
+function createParagraph(
+  text: string,
+  className: string,
+): HTMLParagraphElement {
   const p = document.createElement("p");
   p.textContent = text;
+  p.classList.add(className);
   return p;
 }
 
@@ -18,8 +22,8 @@ export function photographerCard(data: Photographer) {
   anchor.appendChild(img);
   anchor.appendChild(h2);
   article.appendChild(anchor);
-  article.appendChild(createParagraph(data.fullLocation));
-  article.appendChild(createParagraph(data.tagline));
-  article.appendChild(createParagraph(data.fullPrice));
+  article.appendChild(createParagraph(data.fullLocation, "location"));
+  article.appendChild(createParagraph(data.tagline, "tagline"));
+  article.appendChild(createParagraph(data.fullPrice, "price"));
   return article;
 }

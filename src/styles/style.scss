@@ -23,13 +23,12 @@ header {
 
 .photographer_section {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; // === repeat(3, 1fr)
+  grid-template-columns: 1fr 1fr 1fr; // === repeat(3, 1fr).
   gap: 70px;
   margin-top: 100px;
   a {
     display: flex;
     flex-direction: column;
-    //justify-content: center;
     align-items: center;
   }
   article {
@@ -41,7 +40,9 @@ header {
     h2 {
       color: #d3573c;
       font-size: 36px;
+      font-weight: 300;
       margin: 0;
+      margin-top: 14px;
       text-align: center;
     }
     img {
@@ -52,6 +53,22 @@ header {
     }
     p {
       margin: 0;
+    }
+    .location {
+      margin: 4px 0px;
+      color: #901c1c;
+      font-weight: 400;
+      font-size: 14px;
+    }
+
+    .tagline {
+      font-weight: 300;
+      font-size: 11px;
+    }
+
+    .price {
+      color: #757575;
+      font-size: 10px;
     }
   }
 }
