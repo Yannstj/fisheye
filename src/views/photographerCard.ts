@@ -10,11 +10,17 @@ function createParagraph(
   return p;
 }
 
+function createAnchor(photographerPath: string) {
+  const anchor = document.createElement("a");
+  anchor.setAttribute("href", photographerPath);
+  return anchor;
+}
+
 export function photographerCard(data: Photographer) {
   const article = document.createElement("article");
   const img = document.createElement("img");
   const h2 = document.createElement("h2");
-  const anchor = document.createElement("a");
+  const anchor = createAnchor(`photogpaher.html?id${data.id}`);
 
   img.setAttribute("src", data.portraitPath);
   img.setAttribute("alt", data.name);
