@@ -33,3 +33,5 @@ export function photographerCard(data: Photographer) {
   article.appendChild(createParagraph(data.fullPrice, "price"));
   return article;
 }
+
+//penser a rendre la fontion create paragraphe global
