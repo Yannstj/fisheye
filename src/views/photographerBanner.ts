@@ -10,7 +10,7 @@ function createParagraph(
   return p;
 }
 
-export function photogpaherBanner(data: Photographer) {
+export function photographerBanner(data: Photographer) {
   const fragment = document.createDocumentFragment();
   const h1 = document.createElement("h1");
   const button = document.createElement("button");
