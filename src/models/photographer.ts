@@ -38,4 +38,16 @@ export class Photographer implements PhotographerData {
   get fullPrice(): string {
     return `${this.price}€/jour`;
   }
+
+  get mediaFolderName(): string {
+    let name = this.name;
+    let formattedName = name
+      .replace("-", " ")
+      .split(" ")
+      .slice(0, -1)
+      .join(" ");
+    //split cree un tableau d'elements a chaque espace rencontré
+    // ici on suppose que le derniere element de slice est toujours le nom de famille
+    return formattedName;
+  }
 }

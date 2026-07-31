@@ -20,7 +20,7 @@ export function photographerCard(data: Photographer) {
   const article = document.createElement("article");
   const img = document.createElement("img");
   const h2 = document.createElement("h2");
-  const anchor = createAnchor(`photogpaher.html?id${data.id}`);
+  const anchor = createAnchor(`photographer.html?id=${data.id}`);
 
   img.setAttribute("src", data.portraitPath);
   img.setAttribute("alt", data.name);

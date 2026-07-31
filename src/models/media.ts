@@ -16,8 +16,9 @@ export class Media implements MediaData {
   likes: number;
   date: string;
   price: number;
+  folderName: string;
 
-  constructor(data: MediaData) {
+  constructor(data: MediaData, folderName: string) {
     this.id = data.id;
     this.photographerId = data.photographerId;
     this.title = data.title;
@@ -25,9 +26,10 @@ export class Media implements MediaData {
     this.likes = data.likes;
     this.date = data.date;
     this.price = data.price;
+    this.folderName = folderName;
   }
 
-  //   get mediaPath() {
-  //     return `assets/photographers/.../${this.image}`;
-  //   }
+  get mediaPath() {
+    return `assets/photographers/${this.folderName}/${this.image}`;
+  }
 }
