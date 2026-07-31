@@ -1,6 +1,3 @@
-import { Media, MediaData } from "./media";
-import { Photographer, PhotographerData } from "./photographer.js";
-
 export async function fetchFisheyeData() {
   const url: string = "/data/photographers.json";
   try {
@@ -8,15 +5,9 @@ export async function fetchFisheyeData() {
     if (!response.ok) {
       throw new Error("Bad request");
     }
-    const result = await response.json();
-    const photographers = result.photographers.map(
-      (data: PhotographerData) => new Photographer(data),
-    );
-    const media = result.media.map(
-      (data: MediaData, folderName: string) => new Media(data, folderName),
-    );
+    const data = await response.json();
 
-    return [photographers, media];
+    return { photographers: data.photographers, media: data.media };
   } catch (error) {
     throw error;
   }
