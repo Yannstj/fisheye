@@ -16,21 +16,21 @@ function createAnchor(photographerPath: string) {
   return anchor;
 }
 
-export function photographerCard(data: Photographer) {
+export function photographerCard(photographer: Photographer) {
   const article = document.createElement("article");
   const img = document.createElement("img");
   const h2 = document.createElement("h2");
-  const anchor = createAnchor(`photographer.html?id=${data.id}`);
+  const anchor = createAnchor(`photographer.html?id=${photographer.id}`);
 
-  img.setAttribute("src", data.portraitPath);
-  img.setAttribute("alt", data.name);
-  h2.textContent = data.name;
+  img.setAttribute("src", photographer.portraitPath);
+  img.setAttribute("alt", photographer.name);
+  h2.textContent = photographer.name;
   anchor.appendChild(img);
   anchor.appendChild(h2);
   article.appendChild(anchor);
-  article.appendChild(createParagraph(data.fullLocation, "location"));
-  article.appendChild(createParagraph(data.tagline, "tagline"));
-  article.appendChild(createParagraph(data.fullPrice, "price"));
+  article.appendChild(createParagraph(photographer.fullLocation, "location"));
+  article.appendChild(createParagraph(photographer.tagline, "tagline"));
+  article.appendChild(createParagraph(photographer.fullPrice, "price"));
   return article;
 }
 

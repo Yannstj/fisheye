@@ -10,13 +10,13 @@ function createParagraph(
   return p;
 }
 
-export function photographerBanner(data: Photographer) {
+export function photographerBanner(photographer: Photographer) {
   const fragment = document.createDocumentFragment();
   const h1 = document.createElement("h1");
   const button = document.createElement("button");
   const img = document.createElement("img");
 
-  h1.textContent = data.name;
+  h1.textContent = photographer.name;
   fragment.appendChild(h1);
   return fragment;
 }

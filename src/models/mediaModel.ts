@@ -6,8 +6,8 @@ export async function getMediaByPhotographerId(
   photographerId: number,
   photographers: Photographer[],
 ): Promise<Media[]> {
-  const mediasData = await fetchFisheyeData();
-  const filteredMedia = mediasData.media.filter(
+  const fisheyeData = await fetchFisheyeData();
+  const filteredMedia = fisheyeData.media.filter(
     (media: MediaData) => media.photographerId === photographerId, //photographerId est le params passer a la fonction
   );
   const foundPhotographer = photographers.find(
