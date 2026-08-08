@@ -1,14 +1,5 @@
 import { Photographer } from "../models/photographer.js";
-
-function createParagraph(
-  text: string,
-  className: string,
-): HTMLParagraphElement {
-  const p = document.createElement("p");
-  p.textContent = text;
-  p.classList.add(className);
-  return p;
-}
+import { createParagraph } from "../utils/dom.js";
 
 function createAnchor(photographerPath: string) {
   const anchor = document.createElement("a");
@@ -33,5 +24,3 @@ export function photographerCard(photographer: Photographer) {
   article.appendChild(createParagraph(photographer.fullPrice, "price"));
   return article;
 }
-
-//penser a rendre la fontion create paragraphe global

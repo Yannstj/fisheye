@@ -1,14 +1,5 @@
 import { Photographer } from "../models/photographer.js";
-
-function createParagraph(
-  text: string,
-  className: string,
-): HTMLParagraphElement {
-  const p = document.createElement("p");
-  p.textContent = text;
-  p.classList.add(className);
-  return p;
-}
+import { createParagraph } from "../utils/dom.js";
 
 export function photographerBanner(photographer: Photographer) {
   const fragment = document.createDocumentFragment();
@@ -16,9 +7,15 @@ export function photographerBanner(photographer: Photographer) {
   const button = document.createElement("button");
   const img = document.createElement("img");
 
+  img.setAttribute("src", photographer.portraitPath);
+  img.setAttribute("alt", photographer.name);
+  img.setAttribute("class", "bannerImage");
   h1.textContent = photographer.name;
+  button.textContent = "Contactez-moi";
   fragment.appendChild(h1);
+  fragment.appendChild(createParagraph(photographer.fullLocation, "location"));
+  fragment.appendChild(createParagraph(photographer.tagline, "tagline"));
+  fragment.appendChild(button);
+  fragment.appendChild(img);
   return fragment;
 }
-
-//penser a rendre la fontion create paragraphe global
