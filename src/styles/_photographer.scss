@@ -1,9 +1,34 @@
 .photographer_banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fafafa;
+  margin-left: 100px;
+  margin-right: 100px;
+  &_details {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 42px;
+  }
+  button {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    padding: 11px;
+    width: 170px;
+    height: 70px;
+    border: none;
+    background-color: #901c1c;
+    border-radius: 5px;
+    cursor: pointer;
+  }
   img {
     height: 200px;
     width: 200px;
     border-radius: 50%;
     object-fit: cover;
+    padding: 42px;
   }
 }
 // #contact_modal {
