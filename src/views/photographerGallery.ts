@@ -1,15 +1,12 @@
-export function photographerGallery(media: string) {
-  console.log(media);
+import { Media } from "../models/media";
 
-  //   const fragment = document.createDocumentFragment();
-  //   //   const label = document.createElement("label");
-  //   //   const input = document.createElement("input");
-  //   const mediaImage = document.createElement("img");
+export function photographerGallery(media: Media): DocumentFragment {
+  const fragment = document.createDocumentFragment();
 
-  //   mediaImage.setAttribute("src", `${media}`);
-  //   //   fragment.appendChild(label);
-  //   //   fragment.appendChild(input);
-  //   fragment.appendChild(mediaImage);
+  const mediaImage = document.createElement("img");
+  mediaImage.setAttribute("src", media.mediaPath);
 
-  //   return fragment;
+  fragment.appendChild(mediaImage);
+
+  return fragment;
 }

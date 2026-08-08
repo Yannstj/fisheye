@@ -1,6 +1,6 @@
 import { getMediaByPhotographerId } from "../models/mediaModel.js";
 import { getPhotographers } from "../models/photographerModel.js";
-import { photographerGallery } from "../views/photographerGallery";
+import { photographerGallery } from "../views/photographerGallery.js";
 
 export async function initPhotographerMedia() {
   const container = document.querySelector(".photographer_gallery");
@@ -24,15 +24,7 @@ export async function initPhotographerMedia() {
   );
 
   mediaList.forEach((media) => {
-    const fragment = photographerGallery(media.mediaPath);
+    const fragment = photographerGallery(media);
     container.appendChild(fragment);
   });
 }
-
-// function photographerGallery(mediaPath: string): HTMLElement {
-//   const article = document.createElement("article");
-
-//   // ...
-
-//   return article;
-// }
