@@ -14,7 +14,6 @@ export function photographerBanner(photographer: Photographer) {
   img.setAttribute("class", "photographer_banner_image");
   h1.textContent = photographer.name;
   button.textContent = "Contactez-moi";
-  button.setAttribute("aria-label", "Ouvrir le formulaire de contact");
   containerDetails.appendChild(h1);
   containerDetails.appendChild(
     createParagraph(photographer.fullLocation, "location"),

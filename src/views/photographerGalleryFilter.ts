@@ -1,12 +1,25 @@
+function createOptionInputs(
+  text: string,
+  className: string,
+): HTMLOptionElement {
+  const option = document.createElement("option");
+  option.textContent = text;
+  option.classList.add(className);
+  return option;
+}
 export function photographerGalleryFilter() {
   const fragment = document.createDocumentFragment();
 
   const label = document.createElement("label");
-  const input = document.createElement("input");
+  const select = document.createElement("select");
+
   label.textContent = "Trier par";
 
   fragment.appendChild(label);
-  fragment.appendChild(input);
+  fragment.appendChild(select);
+  fragment.appendChild(createOptionInputs("Popularité", "popularity"));
+  fragment.appendChild(createOptionInputs("Date", "date"));
+  fragment.appendChild(createOptionInputs("Titre", "title"));
   console.log(fragment);
 
   return fragment;

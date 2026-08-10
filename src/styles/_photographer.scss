@@ -41,6 +41,11 @@
   }
 }
 
+.photographer_filter {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
 .photographer_gallery {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr; // === repeat(3, 1fr).
