@@ -48,7 +48,7 @@
 
 .photographer_gallery {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; // === repeat(3, 1fr).
+  grid-template-columns: repeat(3, 1fr);
   margin-top: 60px;
   margin-left: 100px;
   margin-right: 100px;

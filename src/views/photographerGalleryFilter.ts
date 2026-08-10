@@ -17,9 +17,9 @@ export function photographerGalleryFilter() {
 
   fragment.appendChild(label);
   fragment.appendChild(select);
-  fragment.appendChild(createOptionInputs("Popularité", "popularity"));
-  fragment.appendChild(createOptionInputs("Date", "date"));
-  fragment.appendChild(createOptionInputs("Titre", "title"));
+  select.appendChild(createOptionInputs("Popularité", "popularity"));
+  select.appendChild(createOptionInputs("Date", "date"));
+  select.appendChild(createOptionInputs("Titre", "title"));
   console.log(fragment);
 
   return fragment;

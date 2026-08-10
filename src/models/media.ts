@@ -33,3 +33,4 @@ export class Media implements MediaData {
     return `assets/photographers/${this.folderName}/${this.image}`;
   }
 }
+//TODO asap, gerer le media video
