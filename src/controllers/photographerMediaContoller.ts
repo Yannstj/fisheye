@@ -1,12 +1,19 @@
 import { getMediaByPhotographerId } from "../models/mediaModel.js";
 import { getPhotographers } from "../models/photographerModel.js";
 import { photographerGallery } from "../views/photographerGallery.js";
+import { photographerGalleryFilter } from "../views/photographerGalleryFilter.js";
 
 export async function initPhotographerMedia() {
-  const container = document.querySelector(".photographer_gallery");
-  if (!container) {
+  const filterContainer = document.querySelector(".photographer_filter");
+  const galleryContainer = document.querySelector(".photographer_gallery");
+  if (!galleryContainer) {
     throw new Error("Container .photographer_gallery introuvable");
   }
+
+  if (!filterContainer) {
+    throw new Error("Container .photographer_filter introuvable");
+  }
+  const filterFragment = photographerGalleryFilter();
   const params = new URLSearchParams(window.location.search);
   const photographerId = Number(params.get("id"));
 
@@ -17,7 +24,7 @@ export async function initPhotographerMedia() {
   if (!photographer) {
     throw new Error("Photographe introuvable");
   }
-
+  filterContainer.appendChild(filterFragment);
   const mediaList = await getMediaByPhotographerId(
     photographerId,
     photographers,
@@ -25,6 +32,6 @@ export async function initPhotographerMedia() {
 
   mediaList.forEach((media) => {
     const fragment = photographerGallery(media);
-    container.appendChild(fragment);
+    galleryContainer.appendChild(fragment);
   });
 }
