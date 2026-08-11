@@ -22,10 +22,10 @@ export class Media implements MediaData {
   title: string;
   likes: number;
   date: string;
-  image?: string;
-  video?: string;
   price: number;
   folderName: string;
+  type: "image" | "video";
+  filename: string;
 
   constructor(data: MediaDataType, folderName: string) {
     this.id = data.id;
@@ -35,16 +35,17 @@ export class Media implements MediaData {
     this.date = data.date;
     this.price = data.price;
     this.folderName = folderName;
+
     if ("image" in data) {
-      this.image = data.image;
+      this.type = "image";
+      this.filename = data.image;
     } else {
-      this.video = data.video;
+      this.type = "video";
+      this.filename = data.video;
     }
   }
 
   get mediaPath() {
-    const filename = this.image ?? this.video;
-    return `assets/photographers/${this.folderName}/${filename}`;
+    return `assets/photographers/${this.folderName}/${this.filename}`;
   }
 }
-//TODO asap, gerer le media video
