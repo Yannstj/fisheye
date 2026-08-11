@@ -20,7 +20,5 @@ export function photographerGalleryFilter() {
   select.appendChild(createOptionInputs("Popularité", "popularity"));
   select.appendChild(createOptionInputs("Date", "date"));
   select.appendChild(createOptionInputs("Titre", "title"));
-  console.log(fragment);
-
   return fragment;
 }

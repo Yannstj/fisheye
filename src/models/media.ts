@@ -14,7 +14,7 @@ interface MediaVideoData extends MediaData {
   video: string;
 }
 
-type MediaDataType = MediaImageData | MediaVideoData;
+export type MediaDataType = MediaImageData | MediaVideoData;
 
 export class Media implements MediaData {
   id: number;
