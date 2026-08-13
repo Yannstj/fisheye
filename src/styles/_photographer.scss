@@ -42,8 +42,17 @@
 }
 
 .photographer_filter {
+  margin-top: 27px;
   margin-left: 100px;
   margin-right: 100px;
+  select {
+    margin-left: 13px;
+    width: 160px;
+    height: 40px;
+    padding-left: 8px;
+    text-align: left;
+    background-color: #901c1c;
+  }
 }
 
 .photographer_gallery {
