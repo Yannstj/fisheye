@@ -7,11 +7,16 @@ function createOptionInputs(
   option.classList.add(className);
   return option;
 }
+
 export function photographerGalleryFilter() {
   const fragment = document.createDocumentFragment();
 
   const label = document.createElement("label");
   const select = document.createElement("select");
+  // bouton + ARIA listbox A refacto
+
+  label.setAttribute("for", "listbox");
+  select.setAttribute("id", "listbox");
 
   label.textContent = "Trier par";
 

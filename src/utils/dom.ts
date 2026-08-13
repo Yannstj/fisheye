@@ -7,3 +7,4 @@ export function createParagraph(
   p.classList.add(className);
   return p;
 }
+// peut etre devrais je utiliser le templating html pour eviter ce genre de fonction

@@ -4,7 +4,7 @@ import { Photographer } from "./photographer.js";
 
 export async function getMediaByPhotographerId(
   photographerId: number,
-  photographers: Photographer[],
+  photographers: Photographer[], // a revoir pas pertinent ... il faudrait surment utilser un seul fetch broski
 ): Promise<Media[]> {
   const fisheyeData = await fetchFisheyeData();
   const filteredMedia = fisheyeData.media.filter(
