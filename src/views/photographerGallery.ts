@@ -20,3 +20,4 @@ export function photographerGallery(media: Media): DocumentFragment {
 
   return fragment;
 }
+//template html

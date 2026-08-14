@@ -26,3 +26,4 @@ export function photographerBanner(photographer: Photographer) {
   fragment.appendChild(img);
   return fragment;
 }
+// templating

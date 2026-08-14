@@ -27,3 +27,4 @@ export function photographerGalleryFilter() {
   select.appendChild(createOptionInputs("Titre", "title"));
   return fragment;
 }
+// templating plus mini factory
