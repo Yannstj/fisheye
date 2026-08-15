@@ -3,7 +3,7 @@ import { getPhotographers } from "../models/photographerModel.js";
 //import { photographerGallery } from "../views/photographerGallery.js";
 //import { photographerGalleryFilter } from "../views/photographerGalleryFilter.js";
 
-export async function initPhotographerMedia() {
+export async function initPhotographerMedia(photographer, photographerMedia) {
   // if (!filterContainer) {
   //   throw new Error("Container .photographer_filter introuvable");
   // }

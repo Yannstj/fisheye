@@ -1,25 +1,12 @@
-import { fetchFisheyeData } from "./api.js";
 import { Media, MediaDataType } from "./media.js";
 import { Photographer } from "./photographer.js";
 
-export async function getMediaByPhotographerId(
+export function getMediaByPhotographerId(
   photographerId: number,
   mediaData: MediaDataType[],
-  photographers: Photographer[], // a revoir pas pertinent ... il faudrait surment utilser un seul fetch broski []
-): Promise<Media[]> {
-  const fisheyeData = await fetchFisheyeData();
-  const filteredMedia = fisheyeData.media.filter(
-    (media: MediaDataType) => media.photographerId === photographerId, //photographerId est le params passer a la fonction
-  );
-  const foundPhotographer = photographers.find(
-    (photographer) => photographer.id === photographerId,
-  );
-  if (!foundPhotographer) {
-    throw new Error("Aucun photographe coresspondant");
-  }
-  const mediaList = filteredMedia.map(
-    (data: MediaDataType) => new Media(data, foundPhotographer.mediaFolderName), //mediaFolderName getter de Photographer
-  );
-
-  return mediaList;
+  photographer: Photographer,
+): Media[] {
+  return mediaData
+    .filter((media) => media.photographerId === photographerId)
+    .map((data) => new Media(data, photographer.mediaFolderName));
 }

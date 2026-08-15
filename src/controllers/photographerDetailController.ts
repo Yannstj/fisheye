@@ -1,3 +1,4 @@
+import { fetchFisheyeData } from "../models/api.js";
 import { getPhotographers } from "../models/photographerModel.js";
 import {
   photographerBanner,
@@ -7,8 +8,8 @@ import {
 export async function initPhotographerDetail() {
   const params = new URLSearchParams(window.location.search);
   const photographerId = Number(params.get("id"));
-
-  const photographers = await getPhotographers();
+  const fisheyeData = await fetchFisheyeData();
+  const photographers = getPhotographers(fisheyeData.photographers);
   const photographer = photographers.find(
     (photographer) => photographer.id === photographerId,
   );
