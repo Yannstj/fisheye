@@ -1,10 +1,11 @@
 import { getPhotographers } from "../models/photographerModel.js";
-import { photographerCard } from "../views/photographerCard.js";
+import {
+  photographerCard,
+  renderPhotographerCard,
+} from "../views/photographerCard.js";
 
 export async function initPhotographers() {
   const photographers = await getPhotographers();
-  photographers.forEach((photographer) => {
-    const card = photographerCard(photographer);
-    return card;
-  });
+  const template = photographers.map(photographerCard).join(""); //on renvoi ainsi une seul string
+  renderPhotographerCard(template);
 }

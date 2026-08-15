@@ -1,29 +1,18 @@
 import { Photographer } from "../models/photographer.js";
-import { createParagraph } from "../utils/dom.js";
 
-export function photographerBanner(photographer: Photographer) {
-  const fragment = document.createDocumentFragment();
-  const containerDetails = document.createElement("div");
-  const h1 = document.createElement("h1");
-  const button = document.createElement("button");
-  const img = document.createElement("img");
-
-  containerDetails.setAttribute("class", "photographer_banner_details");
-  img.setAttribute("src", photographer.portraitPath);
-  img.setAttribute("alt", photographer.name);
-  img.setAttribute("class", "photographer_banner_image");
-  h1.textContent = photographer.name;
-  button.textContent = "Contactez-moi";
-  containerDetails.appendChild(h1);
-  containerDetails.appendChild(
-    createParagraph(photographer.fullLocation, "location"),
-  );
-  containerDetails.appendChild(
-    createParagraph(photographer.tagline, "tagline"),
-  );
-  fragment.appendChild(containerDetails);
-  fragment.appendChild(button);
-  fragment.appendChild(img);
-  return fragment;
+export function renderPhotographerBanner(html: string): void {
+  const container = document.querySelector(".photographer_banner");
+  if (!container) {
+    throw new Error("Container .photographer_banner introuvable");
+  }
+  container.innerHTML = html;
 }
-// templating
+export function photographerBanner(photographer: Photographer): string {
+  return `<div class="photographer_banner_details">
+  <h1>${photographer.name}</h1>
+  <p class="location">${photographer.fullLocation}</p>
+  <p class="tagline">${photographer.tagline}</p>
+  </div>
+  <button>Contactez-moi</button>
+  <img src="${photographer.portraitPath}" alt="${photographer.name}" class="photographer_banner_image">`;
+}
