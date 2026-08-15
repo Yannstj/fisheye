@@ -1,23 +1,25 @@
 import { Media } from "../models/media.js";
 
-export function photographerGallery(media: Media): DocumentFragment {
-  const fragment = document.createDocumentFragment();
-  const article = document.createElement("article");
-  if (media.type === "video") {
-    const mediaVideo = document.createElement("video");
-    const sourceVideo = document.createElement("source");
-    sourceVideo.setAttribute("src", media.mediaPath);
-    mediaVideo.appendChild(sourceVideo);
-    article.appendChild(mediaVideo);
-  } else {
-    const mediaImage = document.createElement("img");
-    mediaImage.setAttribute("src", media.mediaPath);
-    mediaImage.setAttribute("alt", media.title);
-    article.appendChild(mediaImage);
+export function renderPhotographerGallery() {
+  const galleryContainer = document.querySelector(".photographer_gallery");
+  if (!galleryContainer) {
+    throw new Error("Container .photographer_gallery introuvable");
   }
-
-  fragment.appendChild(article);
-
-  return fragment;
+}
+export function photographerGallery(media: Media): string {
+  const mediaImage = `<article>
+  <img src="${media.mediaPath}" alt="${media.title}">
+  </article>`;
+  const mediaVideo = `<article>
+  <video>
+  <source src="${media.mediaPath}">
+  </video>
+  </article>`;
+  let template = "";
+  if (media.type === "video") {
+    template = mediaVideo;
+  }
+  template = mediaImage;
+  return template;
 }
 //template html
