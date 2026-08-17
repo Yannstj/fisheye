@@ -1,5 +1,18 @@
 import { initPhotographerDetail } from "./controllers/photographerDetailController.js";
-import { initPhotographerMedia } from "./controllers/photographerMediaContoller.js";
+import { fetchFisheyeData } from "./models/api.js";
+import { getPhotographers } from "./models/photographerModel.js";
 
-initPhotographerDetail();
-initPhotographerMedia();
+async function initPhotographerPage() {
+  const fisheyeData = await fetchFisheyeData();
+  const params = new URLSearchParams(window.location.search);
+  const photographerId = Number(params.get("id"));
+  const photographers = getPhotographers(fisheyeData.photographers);
+  const photographer = photographers.find((p) => p.id === photographerId);
+  if (!photographer) {
+    throw new Error("Photographe introuvable");
+  }
+  initPhotographerDetail(photographer);
+  //initPhotographerMedia(photographer, fisheyeData.media);
+}
+
+initPhotographerPage();
