@@ -1,13 +1,5 @@
 import { Photographer } from "../models/photographer.js";
 
-export function renderPhotographerCard(html: string): void {
-  const container = document.querySelector(".photographer_section");
-  if (!container) {
-    throw new Error("Container .photographer_section introuvable");
-  }
-  container.innerHTML = html;
-}
-
 export function photographerCard(photographer: Photographer): string {
   return `
     <article>
@@ -20,4 +12,12 @@ export function photographerCard(photographer: Photographer): string {
       <p class="price">${photographer.fullPrice}</p>
     </article>
   `;
+}
+export function renderPhotographerCards(photographers: Photographer[]): void {
+  const container = document.querySelector(".photographer_section");
+  if (!container) {
+    throw new Error("Container .photographer_section introuvable");
+  }
+  const photographerCards = photographers.map(photographerCard).join("");
+  container.innerHTML = photographerCards;
 }

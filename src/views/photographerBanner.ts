@@ -1,11 +1,21 @@
 import { Photographer } from "../models/photographer.js";
 
-export function renderPhotographerBanner(html: string): void {
+export function renderPhotographerBanner(photographers: Photographer[]): void {
   const container = document.querySelector(".photographer_banner");
   if (!container) {
     throw new Error("Container .photographer_banner introuvable");
   }
-  container.innerHTML = html;
+  const params = new URLSearchParams(window.location.search);
+  const photographerId = Number(params.get("id"));
+  const photographer = photographers.find(
+    (photographer) => photographer.id === photographerId,
+  );
+  if (!photographer) {
+    throw new Error("Photographe introuvable");
+  }
+
+  const photographerDetails = photographerBanner(photographer);
+  container.innerHTML = photographerDetails;
 }
 export function photographerBanner(photographer: Photographer): string {
   return `<div class="photographer_banner_details">
