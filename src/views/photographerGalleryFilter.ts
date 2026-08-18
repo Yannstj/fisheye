@@ -28,3 +28,9 @@ export function photographerGalleryFilter() {
   return fragment;
 }
 // templating plus mini factory
+`<label for="listbox">Trier par</label>
+<select id="listbox">
+<option class="popularity">Popularité
+</option><option class="date">Date</option>
+<option class="title">Titre</option>
+</select>`;
