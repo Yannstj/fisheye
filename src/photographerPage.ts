@@ -1,4 +1,5 @@
 import { initPhotographerDetail } from "./controllers/photographerDetailController.js";
+import { initPhotographerMedia } from "./controllers/photographerMediaContoller.js";
 import { fetchFisheyeData } from "./models/api.js";
 import { getPhotographers } from "./models/photographerModel.js";
 
@@ -12,7 +13,9 @@ async function initPhotographerPage() {
     throw new Error("Photographe introuvable");
   }
   initPhotographerDetail(photographer);
-  //initPhotographerMedia(photographer, fisheyeData.media);
+
+  initPhotographerMedia(photographer, fisheyeData.media);
+  console.log(typeof fisheyeData.media);
 }
 
 initPhotographerPage();
