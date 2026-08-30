@@ -5,3 +5,10 @@ export function getPhotographers(
 ): Photographer[] {
   return photographers.map((data: PhotographerData) => new Photographer(data));
 }
+
+export function getPhotographerById(
+  photographers: Photographer[],
+  id: number,
+): Photographer | undefined {
+  return photographers.find((p) => p.id === id);
+}
