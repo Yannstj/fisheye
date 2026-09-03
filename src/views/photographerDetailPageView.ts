@@ -6,6 +6,7 @@ export function renderDetailPhotographerPage(
   medias: Media[],
 ): void {
   displayHeader(photographer);
+  displayDropDown();
   displayMedia(medias);
 }
 
@@ -27,6 +28,23 @@ function photographerBanner(photographer: Photographer): string {
   <img src="${photographer.portraitPath}" alt="${photographer.name}" class="photographer_banner_image">`;
 }
 
+function displayDropDown() {
+  const container = document.querySelector(".photographer_filter");
+  if (!container) {
+    throw new Error("Container .photographer_filter introuvable");
+  }
+  container.innerHTML = photographerFilter();
+}
+
+function photographerFilter() {
+  return ` <button aria-haspopup="listbox" aria-expanded="false" aria-controls="dropdown">Trier par</button>
+  <ul id="dropdown" role="listbox" class="dropdown-content" hidden>
+    <li role="option" data-sort="popularity">Popularité</li>
+    <li role="option" data-sort="date">Date</li>
+    <li role="option" data-sort="title">Titre</li>
+  </ul>`;
+}
+
 function displayMedia(medias: Media[]): void {
   const container = document.querySelector(".photographer_gallery");
   if (!container) {
@@ -37,6 +55,7 @@ function displayMedia(medias: Media[]): void {
     .join("");
 }
 
+//factory
 function photographerGallery(media: Media): string {
   const isVideo = media.type === "video";
   return isVideo
