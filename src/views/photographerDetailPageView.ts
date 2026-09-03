@@ -51,14 +51,19 @@ function displayMedia(medias: Media[]): void {
     throw new Error("Container .photographer_gallery introuvable");
   }
   container.innerHTML = medias
-    .map((media) => photographerGallery(media))
+    .map((media) => photographerGalleryFactory(media))
     .join("");
 }
 
-//factory
-function photographerGallery(media: Media): string {
+function photographerGalleryFactory(media: Media): string {
   const isVideo = media.type === "video";
-  return isVideo
-    ? `<article><video><source src="${media.mediaPath}"></video></article>`
-    : `<article><img src="${media.mediaPath}" alt="${media.title}"></article>`;
+  const mediaElement = isVideo
+    ? `<video><source src="${media.mediaPath}"></video>`
+    : `<img src="${media.mediaPath}" alt="${media.title}">`;
+  const html = `<article>
+    ${mediaElement}
+    <h3>${media.title}</h3>
+    <p class="likes"></p>
+  </article>`;
+  return html;
 }
