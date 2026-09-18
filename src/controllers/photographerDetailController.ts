@@ -1,10 +1,17 @@
 import { fetchFisheyeData } from "../models/api.js";
-import { getMediaByPhotographerId } from "../models/mediaModel.js";
+import {
+  getMediaByPhotographerId,
+  sortMedia,
+  SortCriteria,
+} from "../models/mediaModel.js";
 import {
   getPhotographerById,
   getPhotographers,
 } from "../models/photographerModel.js";
-import { renderDetailPhotographerPage } from "../views/photographerDetailPageView.js";
+import {
+  displayMedia,
+  renderDetailPhotographerPage,
+} from "../views/photographerDetailPageView.js";
 
 export async function initPhotographerPage(): Promise<void> {
   const fisheyeData = await fetchFisheyeData();
@@ -16,10 +23,16 @@ export async function initPhotographerPage(): Promise<void> {
     throw new Error("Photographe introuvable");
   }
 
-  const media = getMediaByPhotographerId(
+  let media = getMediaByPhotographerId(
     photographer.id,
     fisheyeData.media,
     photographer,
   );
-  renderDetailPhotographerPage(photographer, media);
+
+  function handleSortChange(criteria: SortCriteria): void {
+    media = sortMedia(media, criteria);
+    displayMedia(media);
+  }
+
+  renderDetailPhotographerPage(photographer, media, handleSortChange);
 }
