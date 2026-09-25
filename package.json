@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Yannstj/fisheye#readme",
   "devDependencies": {
     "sass": "^1.101.3",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
   }
 }

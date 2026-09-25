@@ -82,10 +82,11 @@ function photographerFilter() {
 }
 
 function displayContactModal(photographer: Photographer): void {
-  document.body.insertAdjacentHTML(
-    "beforeend",
-    contactModalTemplate(photographer),
-  );
+  const container = document.querySelector(".contact_modal");
+  if (!container) {
+    throw new Error("Container .contact_modal introuvable");
+  }
+  container.innerHTML = contactModalTemplate(photographer);
 
   const modal = document.querySelector("#contact_modal");
   const openButton = document.querySelector(
@@ -165,6 +166,21 @@ export function displayMedia(medias: Media[]): void {
   container.innerHTML = medias
     .map((media) => photographerGalleryFactory(media))
     .join("");
+
+  container.addEventListener("click", function (event) {
+    const article = (event.target as HTMLElement).closest("article");
+    if (!article) {
+      return;
+    }
+
+    const id = Number(article.dataset.id);
+    const media = medias.find((media) => media.id === id);
+    if (!media) {
+      return;
+    }
+
+    console.log(media.id);
+  });
 }
 
 function photographerGalleryFactory(media: Media): string {
@@ -172,7 +188,7 @@ function photographerGalleryFactory(media: Media): string {
   const mediaElement = isVideo
     ? `<video><source src="${media.mediaPath}"></video>`
     : `<img src="${media.mediaPath}" alt="${media.title}">`;
-  const html = `<article>
+  const html = `<article data-id="${media.id}">
     ${mediaElement}
     <h3>${media.title}</h3>
     <p class="likes"></p>
