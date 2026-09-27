@@ -9,7 +9,7 @@ export function renderDetailPhotographerPage(
   displayDropDown();
   displayFilter();
   displayMedia(medias);
-  displayModale();
+  displayModal();
 }
 
 function displayHeader(photographer: Photographer): void {
@@ -21,30 +21,29 @@ function displayHeader(photographer: Photographer): void {
 }
 
 function photographerBanner(photographer: Photographer): string {
-  return `<div class="photographer_banner_details">
+  return /*html*/ `
+  <div class="photographer_banner_details">
   <h1>${photographer.name}</h1>
   <p class="location">${photographer.fullLocation}</p>
   <p class="tagline">${photographer.tagline}</p>
   </div>
-  <button id="contact_modale">Contactez-moi</button>
+  <button id="contact_modal">Contactez-moi</button>
   <img src="${photographer.portraitPath}" alt="${photographer.name}" class="photographer_banner_image">`;
 }
 
-function displayModale() {
-  const container = document.querySelector(".photographer_modale");
+function displayModal() {
+  const container = document.querySelector(".photographer_modal");
   if (!container) {
-    throw new Error("Container .photographer_modale introuvable");
+    throw new Error("Container .photographer_modal introuvable");
   }
-  container.innerHTML = photographerModale();
+  container.innerHTML = photographerModal();
 }
 
-function photographerModale(): string {
-  const contactButton = document.getElementById("contact_modale");
-  const modaleTemplate = contactButton?.addEventListener("click", () => {
-    console.log("hehh");
-  });
-  return `<div class="modal" aria-hidden="true" role="dialog" hidden>
-   <div>
+function photographerModal(): string {
+  const contactButton = document.getElementById("contact_modal");
+  const modalTemplate = contactButton?.addEventListener("click", () => {});
+  return /*html*/ `
+  <div class="modal" aria-hidden="true" role="dialog" hidden>
    <header>
    <h2>Contactez-moi</h2>
    </header>
@@ -57,7 +56,6 @@ function photographerModale(): string {
   <input type="text" id="message" name="message" required>
   <button type="submit">Envoyer</button>
 </form>
-   </div>
 </div>`;
 }
 
@@ -70,7 +68,8 @@ function displayDropDown() {
 }
 
 function photographerFilter() {
-  return ` <button aria-haspopup="listbox" aria-expanded="false" aria-controls="dropdown" id="dropdown_button">Trier par</button>
+  return /*html*/ ` 
+  <button aria-haspopup="listbox" aria-expanded="false" aria-controls="dropdown" id="dropdown_button">Trier par</button>
   <ul id="dropdown" role="listbox" class="dropdown-content" hidden>
     <li role="option" data-sort="popularity">Popularité</li>
     <li role="option" data-sort="date">Date</li>
@@ -105,9 +104,11 @@ function displayMedia(medias: Media[]): void {
 function photographerGalleryFactory(media: Media): string {
   const isVideo = media.type === "video";
   const mediaElement = isVideo
-    ? `<video><source src="${media.mediaPath}"></video>`
-    : `<img src="${media.mediaPath}" alt="${media.title}">`;
-  const html = `<article>
+    ? /*html*/ `<video><source src="${media.mediaPath}"></video>`
+    : /*html*/ `<img src="${media.mediaPath}" alt="${media.title}">`;
+  const html =
+    /*html*/
+    `<article>
     ${mediaElement}
     <h3>${media.title}</h3>
     <p class="likes"></p>

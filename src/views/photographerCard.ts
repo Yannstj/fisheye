@@ -10,7 +10,7 @@ export function renderPhotographerCards(photographers: Photographer[]): void {
 }
 
 export function photographerCard(photographer: Photographer): string {
-  return `
+  return /*html*/ `
     <article>
       <a href="photographer.html?id=${photographer.id}">
         <img src="${photographer.portraitPath}" alt="${photographer.name}">
