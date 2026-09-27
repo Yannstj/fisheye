@@ -27,7 +27,7 @@ function photographerBanner(photographer: Photographer): string {
   <p class="location">${photographer.fullLocation}</p>
   <p class="tagline">${photographer.tagline}</p>
   </div>
-  <button id="contact_modal">Contactez-moi</button>
+  <button id="contact_button">Contactez-moi</button>
   <img src="${photographer.portraitPath}" alt="${photographer.name}" class="photographer_banner_image">`;
 }
 
@@ -37,11 +37,14 @@ function displayModal() {
     throw new Error("Container .photographer_modal introuvable");
   }
   container.innerHTML = photographerModal();
+  const contactButton = document.getElementById("contact_button");
+  const modal = document.querySelector(".modal");
+  contactButton?.addEventListener("click", () => {
+    modal?.toggleAttribute("hidden");
+  });
 }
 
 function photographerModal(): string {
-  const contactButton = document.getElementById("contact_modal");
-  const modalTemplate = contactButton?.addEventListener("click", () => {});
   return /*html*/ `
   <div class="modal" aria-hidden="true" role="dialog" hidden>
    <header>
