@@ -7,7 +7,9 @@ export function renderDetailPhotographerPage(
 ): void {
   displayHeader(photographer);
   displayDropDown();
+  displayFilter();
   displayMedia(medias);
+  displayModale();
 }
 
 function displayHeader(photographer: Photographer): void {
@@ -24,8 +26,39 @@ function photographerBanner(photographer: Photographer): string {
   <p class="location">${photographer.fullLocation}</p>
   <p class="tagline">${photographer.tagline}</p>
   </div>
-  <button>Contactez-moi</button>
+  <button id="contact_modale">Contactez-moi</button>
   <img src="${photographer.portraitPath}" alt="${photographer.name}" class="photographer_banner_image">`;
+}
+
+function displayModale() {
+  const container = document.querySelector(".photographer_modale");
+  if (!container) {
+    throw new Error("Container .photographer_modale introuvable");
+  }
+  container.innerHTML = photographerModale();
+}
+
+function photographerModale(): string {
+  const contactButton = document.getElementById("contact_modale");
+  const modaleTemplate = contactButton?.addEventListener("click", () => {
+    console.log("hehh");
+  });
+  return `<div class="modal" aria-hidden="true" role="dialog" hidden>
+   <div>
+   <header>
+   <h2>Contactez-moi</h2>
+   </header>
+    <form action="" method="">
+  <label for="prenom">Prénom</label>
+  <input type="text" id="prenom" name="prenom" required>
+  <label for="nom">Nom</label>
+  <input type="text" id="nom" name="nom" required>
+  <label for="message">Votre message</label>
+  <input type="text" id="message" name="message" required>
+  <button type="submit">Envoyer</button>
+</form>
+   </div>
+</div>`;
 }
 
 function displayDropDown() {
@@ -37,12 +70,26 @@ function displayDropDown() {
 }
 
 function photographerFilter() {
-  return ` <button aria-haspopup="listbox" aria-expanded="false" aria-controls="dropdown">Trier par</button>
+  return ` <button aria-haspopup="listbox" aria-expanded="false" aria-controls="dropdown" id="dropdown_button">Trier par</button>
   <ul id="dropdown" role="listbox" class="dropdown-content" hidden>
     <li role="option" data-sort="popularity">Popularité</li>
     <li role="option" data-sort="date">Date</li>
     <li role="option" data-sort="title">Titre</li>
   </ul>`;
+}
+
+function displayFilter() {
+  const dropdownButton = document.getElementById("dropdown_button");
+  const dropdown = document.getElementById("dropdown");
+  if (!dropdownButton) {
+    throw new Error("Button .dropdown_button introuvable");
+  }
+  if (!dropdown) {
+    throw new Error("Unordored list .dropdown introuvable");
+  }
+  dropdownButton.addEventListener("click", () => {
+    dropdown.toggleAttribute("hidden");
+  });
 }
 
 function displayMedia(medias: Media[]): void {
