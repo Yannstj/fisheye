@@ -9,7 +9,7 @@ export function renderDetailPhotographerPage(
   displayDropDown();
   displayFilter();
   displayMedia(medias);
-  displayModal();
+  displayModal(photographer);
 }
 
 function displayHeader(photographer: Photographer): void {
@@ -31,15 +31,15 @@ function photographerBanner(photographer: Photographer): string {
   <img src="${photographer.portraitPath}" alt="${photographer.name}" class="photographer_banner_image">`;
 }
 
-function displayModal() {
+function displayModal(photographer: Photographer) {
   const container = document.querySelector(".photographer_modal");
   if (!container) {
     throw new Error("Container .photographer_modal introuvable");
   }
-  container.innerHTML = photographerModal();
+  container.innerHTML = photographerModal(photographer);
 
-  const contactButton = document.getElementById("contact_button");
   const modal = document.querySelector(".photographer_modal");
+  const contactButton = document.getElementById("contact_button");
   const closeButton = modal?.querySelector(".modal_close");
   contactButton?.addEventListener("click", () => {
     modal?.toggleAttribute("hidden");
@@ -50,33 +50,33 @@ function displayModal() {
   });
 }
 
-function photographerModal(): string {
+function photographerModal(photographer: Photographer): string {
   return /*html*/ `
   <div class="modal">
    <header>
-   <h2>Contactez-moi</h2>
+   <h2>Contactez-moi<br>${photographer.name}</h2>
    <img src="assets/icons/close.svg" alt="Fermer la modale" class="modal_close">
    </header>
-    <form action="" method="">
-    <div>
-  <label for="prenom">Prénom</label>
-  <input type="text" id="prenom" name="prenom" required>
-  </div>
-  <div>
-  <label for="nom">Nom</label>
-  <input type="text" id="nom" name="nom" required>
-</div>
-<div>
-  <label for="email">email</label>
-  <input type="email" id="email" name="email" required>
- </div>
- <div>
-  <label for="message">Votre message</label>
-  <textarea class="modal_message" id="message" rows="5" required></textarea>
-  </div>
-  <button type="submit">Envoyer</button>
-</form>
-</div>`;
+     <form action="" method="">
+       <div>
+         <label for="prenom">Prénom</label>
+         <input type="text" id="prenom" name="prenom" required>
+       </div>
+      <div>
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" required>
+      </div>
+      <div>
+        <label for="email">email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+     <div>
+        <label for="message">Votre message</label>
+        <textarea class="modal_message" id="message" rows="5" required></textarea>
+     </div>
+       <button type="submit">Envoyer</button>
+    </form>
+  </div>`;
 }
 
 function displayDropDown() {
