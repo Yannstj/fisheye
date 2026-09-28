@@ -49,12 +49,15 @@ function photographerModal(): string {
   <div class="modal" aria-hidden="true" role="dialog" hidden>
    <header>
    <h2>Contactez-moi</h2>
+   <img src="assets/icons/close.svg" alt="Fermer la modale" class="modal_close">
    </header>
     <form action="" method="">
   <label for="prenom">Prénom</label>
   <input type="text" id="prenom" name="prenom" required>
   <label for="nom">Nom</label>
   <input type="text" id="nom" name="nom" required>
+  <label for="email">email</label>
+  <input type="email" id="email" name="email" required>
   <label for="message">Votre message</label>
   <input type="text" id="message" name="message" required>
   <button type="submit">Envoyer</button>
