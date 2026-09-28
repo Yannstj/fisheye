@@ -37,29 +37,43 @@ function displayModal() {
     throw new Error("Container .photographer_modal introuvable");
   }
   container.innerHTML = photographerModal();
+
   const contactButton = document.getElementById("contact_button");
-  const modal = document.querySelector(".modal");
+  const modal = document.querySelector(".photographer_modal");
+  const closeButton = modal?.querySelector(".modal_close");
   contactButton?.addEventListener("click", () => {
     modal?.toggleAttribute("hidden");
+  });
+
+  closeButton?.addEventListener("click", function () {
+    modal?.setAttribute("hidden", "");
   });
 }
 
 function photographerModal(): string {
   return /*html*/ `
-  <div class="modal" aria-hidden="true" role="dialog" hidden>
+  <div class="modal">
    <header>
    <h2>Contactez-moi</h2>
    <img src="assets/icons/close.svg" alt="Fermer la modale" class="modal_close">
    </header>
     <form action="" method="">
+    <div>
   <label for="prenom">Prénom</label>
   <input type="text" id="prenom" name="prenom" required>
+  </div>
+  <div>
   <label for="nom">Nom</label>
   <input type="text" id="nom" name="nom" required>
+</div>
+<div>
   <label for="email">email</label>
   <input type="email" id="email" name="email" required>
+ </div>
+ <div>
   <label for="message">Votre message</label>
-  <input type="text" id="message" name="message" required>
+  <textarea class="modal_message" id="message" rows="5" required></textarea>
+  </div>
   <button type="submit">Envoyer</button>
 </form>
 </div>`;
@@ -115,7 +129,7 @@ function photographerGalleryFactory(media: Media): string {
   const html =
     /*html*/
     `<article>
-    ${mediaElement}
+      ${mediaElement}
     <h3>${media.title}</h3>
     <p class="likes"></p>
   </article>`;
