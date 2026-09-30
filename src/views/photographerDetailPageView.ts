@@ -72,7 +72,7 @@ function photographerModal(photographer: Photographer): string {
       </div>
      <div>
         <label for="message">Votre message</label>
-        <textarea class="modal_message" id="message" rows="5" required></textarea>
+        <textarea class="modal_message" id="message" rows="5" name="message" required></textarea>
      </div>
        <button type="submit">Envoyer</button>
     </form>
