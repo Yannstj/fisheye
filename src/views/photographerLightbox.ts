@@ -1,5 +1,5 @@
 export function renderLightbox(): void {
-  const container = document.querySelector(".photographer_lightbox");
+  const container = document.querySelector("photographer_lightbox");
   if (!container) {
     throw new Error("Container .photographer_lightbox introuvable");
   }

@@ -8,7 +8,18 @@ describe("#View", () => {
       "Container .photographer_lightbox introuvable",
     );
   });
-  it("carousel injection", () => {
-    expect(photographerLightbox()).not.toBeNull();
+  it("injects template into container when found", () => {
+    document.body.innerHTML = '<div class="photographer_lightbox"></div>';
+    renderLightbox();
+
+    const container = document.querySelector(".photographer_lightbox");
+    expect(container?.innerHTML).toBe(photographerLightbox());
+  });
+  it("renders one carousel item per media", () => {
+    const medias = [""];
+    //document.body.innerHTML = photographerLightbox(medias);
+    expect(document.querySelectorAll(".carousel-item")).toHaveLength(
+      medias.length,
+    );
   });
 });
