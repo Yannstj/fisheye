@@ -1,6 +1,6 @@
 import { Media } from "../models/media.js";
 
-export function renderPhotographerLightbox(medias: Media[]): void {
+export function displayLightbox(medias: Media[]): void {
   const container = document.querySelector(".photographer_lightbox");
   if (!container) {
     throw new Error("Container .photographer_lightbox introuvable");

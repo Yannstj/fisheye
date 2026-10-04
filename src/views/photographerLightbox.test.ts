@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { Media } from "../models/media.js";
 import {
+  displayLightbox,
   photographerLightboxTemplate,
-  renderPhotographerLightbox,
 } from "./photographerLightbox";
 
 const medias = [
@@ -13,13 +13,13 @@ const medias = [
 describe("#View", () => {
   it("throws if container missing", () => {
     document.body.innerHTML = "";
-    expect(() => renderPhotographerLightbox(medias)).toThrow(
+    expect(() => displayLightbox(medias)).toThrow(
       "Container .photographer_lightbox introuvable",
     );
   });
   it("injects template into container when found", () => {
     document.body.innerHTML = '<div class="photographer_lightbox"></div>';
-    renderPhotographerLightbox(medias);
+    displayLightbox(medias);
 
     const container = document.querySelector(".photographer_lightbox");
     expect(container?.innerHTML).toBe(photographerLightboxTemplate(medias));

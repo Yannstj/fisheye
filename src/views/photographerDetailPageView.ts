@@ -1,5 +1,6 @@
 import { Media } from "../models/media.js";
 import { Photographer } from "../models/photographer.js";
+import { displayLightbox } from "./photographerLightbox.js";
 
 export function renderDetailPhotographerPage(
   photographer: Photographer,
@@ -10,6 +11,7 @@ export function renderDetailPhotographerPage(
   displayFilter();
   displayMedia(medias);
   displayModal(photographer);
+  displayLightbox(medias);
 }
 
 function displayHeader(photographer: Photographer): void {
@@ -120,6 +122,10 @@ function displayMedia(medias: Media[]): void {
   container.innerHTML = medias
     .map((media) => photographerGalleryFactory(media))
     .join("");
+
+  container.addEventListener("click", () => {
+    console.log(container.closest("[data-id]"));
+  });
 }
 
 function photographerGalleryFactory(media: Media): string {
@@ -129,7 +135,7 @@ function photographerGalleryFactory(media: Media): string {
     : /*html*/ `<img src="${media.mediaPath}" alt="${media.title}">`;
   const html =
     /*html*/
-    `<article>
+    `<article data-id="${media.id}">
       ${mediaElement}
        <h3>${media.title}</h3>
          <p class="likes"></p>
