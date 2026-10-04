@@ -40,6 +40,7 @@ function displayModal(photographer: Photographer) {
 
   const modal = document.querySelector(".photographer_modal");
   const contactButton = document.getElementById("contact_button");
+
   const closeButton = modal?.querySelector(".modal_close");
   contactButton?.addEventListener("click", () => {
     modal?.toggleAttribute("hidden");

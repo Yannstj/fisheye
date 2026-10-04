@@ -1,7 +1,7 @@
 {
   "name": "front-end-fisheye",
   "version": "1.0.0",
-  "description": "Rien à installer ici, il suffit d'ouvrir le fichier `index.html`.",
+  "description": "npm install for dependncies",
   "main": "index.js",
   "scripts": {
     "test": "vitest --watch"

@@ -18,7 +18,7 @@ describe("#View", () => {
   it("renders one carousel item per media", () => {
     const medias = [""];
     //document.body.innerHTML = photographerLightbox(medias);
-    expect(document.querySelectorAll(".carousel-item")).toHaveLength(
+    expect(document.querySelectorAll(".carrousel-item")).toHaveLength(
       medias.length,
     );
   });
