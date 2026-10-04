@@ -123,8 +123,10 @@ function displayMedia(medias: Media[]): void {
     .map((media) => photographerGalleryFactory(media))
     .join("");
 
-  container.addEventListener("click", () => {
-    console.log(container.closest("[data-id]"));
+  container.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const article = target.closest("[data-id]") as HTMLElement;
+    console.log(article?.dataset.id);
   });
 }
 
