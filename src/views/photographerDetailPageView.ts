@@ -126,18 +126,30 @@ function displayMedia(medias: Media[]): void {
     .map((media) => photographerGalleryFactory(media))
     .join("");
 
+  let lastTriggerElement: HTMLElement | null = null;
+  const lightbox = document.querySelector(".photographer_lightbox");
+
+  lightbox?.addEventListener("lightbox:close", () => {
+    lastTriggerElement?.focus();
+  });
+
   container.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
     const article = target.closest("[data-id]") as HTMLElement;
     if (!article) return;
 
     const mediaId = Number(article.dataset.id);
+    lastTriggerElement = article;
 
-    const lightbox = document.querySelector(".photographer_lightbox");
     const main = document.getElementById("main");
     lightbox?.removeAttribute("hidden");
     main?.setAttribute("aria-hidden", "true");
     setActiveCarouselItem(mediaId);
+
+    const closeButton = lightbox?.querySelector(
+      ".lightbox_close",
+    ) as HTMLElement;
+    closeButton?.focus();
   });
 }
 
@@ -148,7 +160,7 @@ function photographerGalleryFactory(media: Media): string {
     : /*html*/ `<img src="${media.mediaPath}" alt="${media.title}">`;
   const html =
     /*html*/
-    `<article data-id="${media.id}">
+    `<article data-id="${media.id}" tabindex="-1">
       ${mediaElement}
        <h3>${media.title}</h3>
          <p class="likes"></p>
