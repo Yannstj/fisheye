@@ -1,6 +1,10 @@
 import { Media } from "../models/media.js";
 
+let currentMedias: Media[] = [];
+
 export function displayLightbox(medias: Media[]): void {
+  currentMedias = medias;
+
   const container = document.querySelector(".photographer_lightbox");
   if (!container) {
     throw new Error("Container .photographer_lightbox introuvable");
@@ -23,11 +27,13 @@ export function displayLightbox(medias: Media[]): void {
   }
 
   function goToNext(): void {
-    setActiveCarouselItem(getNextMediaId(medias, getCurrentMediaId()));
+    setActiveCarouselItem(getNextMediaId(currentMedias, getCurrentMediaId()));
   }
 
   function goToPrevious(): void {
-    setActiveCarouselItem(getPreviousMediaId(medias, getCurrentMediaId()));
+    setActiveCarouselItem(
+      getPreviousMediaId(currentMedias, getCurrentMediaId()),
+    );
   }
 
   container
@@ -37,13 +43,17 @@ export function displayLightbox(medias: Media[]): void {
     .querySelector(".carrousel_next")
     ?.addEventListener("click", goToNext);
 
-  container.addEventListener("keydown", (event) => {
-    const keyboardEvent = event as KeyboardEvent;
-    if (keyboardEvent.key === "ArrowRight") goToNext();
-    if (keyboardEvent.key === "ArrowLeft") goToPrevious();
-    if (keyboardEvent.key === "Escape") closeLightbox();
-    if (keyboardEvent.key === "Tab") trapFocus(keyboardEvent);
-  });
+  const containerElement = container as HTMLElement;
+  if (!containerElement.dataset.keydownBound) {
+    containerElement.addEventListener("keydown", (event) => {
+      const keyboardEvent = event as KeyboardEvent;
+      if (keyboardEvent.key === "ArrowRight") goToNext();
+      if (keyboardEvent.key === "ArrowLeft") goToPrevious();
+      if (keyboardEvent.key === "Escape") closeLightbox();
+      if (keyboardEvent.key === "Tab") trapFocus(keyboardEvent);
+    });
+    containerElement.dataset.keydownBound = "true";
+  }
 
   function trapFocus(event: KeyboardEvent): void {
     const focusableElements = container!.querySelectorAll<HTMLElement>(

@@ -1,9 +1,19 @@
 import { Media } from "../models/media.js";
+import {
+  sortMediaByDate,
+  sortMediaByPopularity,
+  sortMediaByTitle,
+} from "../models/mediaModel.js";
 import { Photographer } from "../models/photographer.js";
 import {
   displayLightbox,
   setActiveCarouselItem,
 } from "./photographerLightbox.js";
+
+const likedMediaIds = new Set<number>();
+let lastTriggerElement: HTMLElement | null = null;
+let currentPhotographer: Photographer;
+let currentMedias: Media[] = [];
 
 export function renderDetailPhotographerPage(
   photographer: Photographer,
@@ -11,11 +21,16 @@ export function renderDetailPhotographerPage(
 ): void {
   displayHeader(photographer);
   displayDropDown();
-  displayFilter();
+  displayFilter(photographer, medias);
   displayMedia(photographer, medias);
   displayModal(photographer);
   displayLightbox(medias);
   displayTotalLikes(photographer, medias);
+
+  const lightbox = document.querySelector(".photographer_lightbox");
+  lightbox?.addEventListener("lightbox:close", () => {
+    lastTriggerElement?.focus();
+  });
 }
 
 function displayHeader(photographer: Photographer): void {
@@ -104,7 +119,7 @@ function photographerFilter() {
   </ul>`;
 }
 
-function displayFilter() {
+function displayFilter(photographer: Photographer, medias: Media[]) {
   const dropdownButton = document.getElementById("dropdown_button");
   const dropdown = document.getElementById("dropdown");
   if (!dropdownButton) {
@@ -116,9 +131,33 @@ function displayFilter() {
   dropdownButton.addEventListener("click", () => {
     dropdown.toggleAttribute("hidden");
   });
+
+  dropdown.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const option = target.closest("[data-sort]") as HTMLElement;
+    if (!option) return;
+
+    const sortBy = option.dataset.sort;
+    let sortedMedias: Media[];
+
+    if (sortBy === "popularity") {
+      sortedMedias = sortMediaByPopularity(medias);
+    } else if (sortBy === "date") {
+      sortedMedias = sortMediaByDate(medias);
+    } else {
+      sortedMedias = sortMediaByTitle(medias);
+    }
+
+    displayMedia(photographer, sortedMedias);
+    displayLightbox(sortedMedias);
+    dropdown.setAttribute("hidden", "");
+  });
 }
 
 function displayMedia(photographer: Photographer, medias: Media[]): void {
+  currentPhotographer = photographer;
+  currentMedias = medias;
+
   const container = document.querySelector(".photographer_gallery");
   if (!container) {
     throw new Error("Container .photographer_gallery introuvable");
@@ -127,46 +166,11 @@ function displayMedia(photographer: Photographer, medias: Media[]): void {
     .map((media) => photographerGalleryFactory(media))
     .join("");
 
-  let lastTriggerElement: HTMLElement | null = null;
-  const lightbox = document.querySelector(".photographer_lightbox");
-  const likedMediaIds = new Set<number>();
+  const containerElement = container as HTMLElement;
+  if (containerElement.dataset.clickBound) return;
+  containerElement.dataset.clickBound = "true";
 
-  lightbox?.addEventListener("lightbox:close", () => {
-    lastTriggerElement?.focus();
-  });
-
-  function openLightbox(article: HTMLElement): void {
-    const mediaId = Number(article.dataset.id);
-    lastTriggerElement = article;
-
-    const main = document.getElementById("main");
-    lightbox?.removeAttribute("hidden");
-    main?.setAttribute("aria-hidden", "true");
-    setActiveCarouselItem(mediaId);
-
-    const closeButton = lightbox?.querySelector(
-      ".lightbox_close",
-    ) as HTMLElement;
-    closeButton?.focus();
-  }
-
-  function likeMedia(article: HTMLElement): void {
-    const mediaId = Number(article.dataset.id);
-    if (likedMediaIds.has(mediaId)) return;
-
-    const media = medias.find((candidate) => candidate.id === mediaId);
-    if (!media) return;
-
-    likedMediaIds.add(mediaId);
-    media.likes += 1;
-
-    const likesCount = article.querySelector(".likes_count");
-    if (likesCount) likesCount.textContent = String(media.likes);
-
-    displayTotalLikes(photographer, medias);
-  }
-
-  container.addEventListener("click", (event) => {
+  containerElement.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
     const article = target.closest("[data-id]") as HTMLElement;
     if (!article) return;
@@ -180,6 +184,36 @@ function displayMedia(photographer: Photographer, medias: Media[]): void {
       openLightbox(article);
     }
   });
+}
+
+function openLightbox(article: HTMLElement): void {
+  const mediaId = Number(article.dataset.id);
+  lastTriggerElement = article;
+
+  const lightbox = document.querySelector(".photographer_lightbox");
+  const main = document.getElementById("main");
+  lightbox?.removeAttribute("hidden");
+  main?.setAttribute("aria-hidden", "true");
+  setActiveCarouselItem(mediaId);
+
+  const closeButton = lightbox?.querySelector(".lightbox_close") as HTMLElement;
+  closeButton?.focus();
+}
+
+function likeMedia(article: HTMLElement): void {
+  const mediaId = Number(article.dataset.id);
+  if (likedMediaIds.has(mediaId)) return;
+
+  const media = currentMedias.find((candidate) => candidate.id === mediaId);
+  if (!media) return;
+
+  likedMediaIds.add(mediaId);
+  media.likes += 1;
+
+  const likesCount = article.querySelector(".likes_count");
+  if (likesCount) likesCount.textContent = String(media.likes);
+
+  displayTotalLikes(currentPhotographer, currentMedias);
 }
 
 function displayTotalLikes(photographer: Photographer, medias: Media[]): void {
