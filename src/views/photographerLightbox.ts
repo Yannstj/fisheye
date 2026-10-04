@@ -6,6 +6,12 @@ export function displayLightbox(medias: Media[]): void {
     throw new Error("Container .photographer_lightbox introuvable");
   }
   container.innerHTML = photographerLightboxTemplate(medias);
+
+  const closeButton = container.querySelector(".lightbox_close");
+  closeButton?.addEventListener("click", () => {
+    container.setAttribute("hidden", "");
+    document.getElementById("main")?.setAttribute("aria-hidden", "false");
+  });
 }
 
 export function carouselItem(media: Media): string {
@@ -13,7 +19,15 @@ export function carouselItem(media: Media): string {
 }
 
 export function photographerLightboxTemplate(medias: Media[]): string {
-  return /*html*/ `<ul class="carrousel">
+  return /*html*/ `<button class="lightbox_close" aria-label="Fermer la visionneuse">×</button>
+                   <ul class="carrousel">
                     ${medias.map((media) => carouselItem(media)).join("")}
                    </ul>`;
+}
+
+export function setActiveCarouselItem(id: number): void {
+  const items = document.querySelectorAll<HTMLElement>(".carousel-item");
+  items.forEach((item) => {
+    item.classList.toggle("active", item.id === String(id));
+  });
 }

@@ -1,6 +1,9 @@
 import { Media } from "../models/media.js";
 import { Photographer } from "../models/photographer.js";
-import { displayLightbox } from "./photographerLightbox.js";
+import {
+  displayLightbox,
+  setActiveCarouselItem,
+} from "./photographerLightbox.js";
 
 export function renderDetailPhotographerPage(
   photographer: Photographer,
@@ -126,7 +129,15 @@ function displayMedia(medias: Media[]): void {
   container.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
     const article = target.closest("[data-id]") as HTMLElement;
-    console.log(article?.dataset.id);
+    if (!article) return;
+
+    const mediaId = Number(article.dataset.id);
+
+    const lightbox = document.querySelector(".photographer_lightbox");
+    const main = document.getElementById("main");
+    lightbox?.removeAttribute("hidden");
+    main?.setAttribute("aria-hidden", "true");
+    setActiveCarouselItem(mediaId);
   });
 }
 
