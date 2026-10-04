@@ -1,17 +1,19 @@
 import { Media } from "../models/media.js";
 
-export function renderLightbox(medias: Media[]): void {
+export function renderPhotographerLightbox(medias: Media[]): void {
   const container = document.querySelector(".photographer_lightbox");
   if (!container) {
     throw new Error("Container .photographer_lightbox introuvable");
   }
-  container.innerHTML = medias
-    .map((media) => photographerLightbox(media))
-    .join("");
+  container.innerHTML = photographerLightboxTemplate(medias);
 }
 
-export function photographerLightbox(media: Media): string {
+export function carouselItem(media: Media): string {
+  return /*html*/ `<li class="carousel-item" aria-hidden="false" id="${media.id}"></li>`;
+}
+
+export function photographerLightboxTemplate(medias: Media[]): string {
   return /*html*/ `<ul class="carrousel">
-                    <li class="carrousel-item" aria-hidden="false" id=${media.id}></li>
+                    ${medias.map((media) => carouselItem(media)).join("")}
                    </ul>`;
 }

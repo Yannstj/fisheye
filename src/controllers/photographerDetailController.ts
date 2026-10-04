@@ -5,7 +5,7 @@ import {
   getPhotographers,
 } from "../models/photographerModel.js";
 import { renderDetailPhotographerPage } from "../views/photographerDetailPageView.js";
-import { renderLightbox } from "../views/photographerLightbox.js";
+import { renderPhotographerLightbox } from "../views/photographerLightbox.js";
 
 export async function initPhotographerPage(): Promise<void> {
   const fisheyeData = await fetchFisheyeData();
@@ -23,5 +23,5 @@ export async function initPhotographerPage(): Promise<void> {
     photographer,
   );
   renderDetailPhotographerPage(photographer, media);
-  renderLightbox(media);
+  renderPhotographerLightbox(media);
 }

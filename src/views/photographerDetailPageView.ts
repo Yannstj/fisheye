@@ -131,8 +131,8 @@ function photographerGalleryFactory(media: Media): string {
     /*html*/
     `<article>
       ${mediaElement}
-    <h3>${media.title}</h3>
-    <p class="likes"></p>
-  </article>`;
+       <h3>${media.title}</h3>
+         <p class="likes"></p>
+     </article>`;
   return html;
 }
