@@ -12,9 +12,10 @@ export function renderDetailPhotographerPage(
   displayHeader(photographer);
   displayDropDown();
   displayFilter();
-  displayMedia(medias);
+  displayMedia(photographer, medias);
   displayModal(photographer);
   displayLightbox(medias);
+  displayTotalLikes(photographer, medias);
 }
 
 function displayHeader(photographer: Photographer): void {
@@ -117,7 +118,7 @@ function displayFilter() {
   });
 }
 
-function displayMedia(medias: Media[]): void {
+function displayMedia(photographer: Photographer, medias: Media[]): void {
   const container = document.querySelector(".photographer_gallery");
   if (!container) {
     throw new Error("Container .photographer_gallery introuvable");
@@ -128,16 +129,13 @@ function displayMedia(medias: Media[]): void {
 
   let lastTriggerElement: HTMLElement | null = null;
   const lightbox = document.querySelector(".photographer_lightbox");
+  const likedMediaIds = new Set<number>();
 
   lightbox?.addEventListener("lightbox:close", () => {
     lastTriggerElement?.focus();
   });
 
-  container.addEventListener("click", (event) => {
-    const target = event.target as HTMLElement;
-    const article = target.closest("[data-id]") as HTMLElement;
-    if (!article) return;
-
+  function openLightbox(article: HTMLElement): void {
     const mediaId = Number(article.dataset.id);
     lastTriggerElement = article;
 
@@ -150,7 +148,53 @@ function displayMedia(medias: Media[]): void {
       ".lightbox_close",
     ) as HTMLElement;
     closeButton?.focus();
+  }
+
+  function likeMedia(article: HTMLElement): void {
+    const mediaId = Number(article.dataset.id);
+    if (likedMediaIds.has(mediaId)) return;
+
+    const media = medias.find((candidate) => candidate.id === mediaId);
+    if (!media) return;
+
+    likedMediaIds.add(mediaId);
+    media.likes += 1;
+
+    const likesCount = article.querySelector(".likes_count");
+    if (likesCount) likesCount.textContent = String(media.likes);
+
+    displayTotalLikes(photographer, medias);
+  }
+
+  container.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const article = target.closest("[data-id]") as HTMLElement;
+    if (!article) return;
+
+    if (target.closest(".like_button")) {
+      likeMedia(article);
+      return;
+    }
+
+    if (target.closest(".media_trigger")) {
+      openLightbox(article);
+    }
   });
+}
+
+function displayTotalLikes(photographer: Photographer, medias: Media[]): void {
+  const container = document.querySelector(".photographer_infos");
+  if (!container) {
+    throw new Error("Container .photographer_infos introuvable");
+  }
+  const totalLikes = medias.reduce((total, media) => total + media.likes, 0);
+  container.innerHTML = photographerInfos(photographer, totalLikes);
+}
+
+function photographerInfos(photographer: Photographer, totalLikes: number): string {
+  return /*html*/ `
+  <p class="total_likes">${totalLikes} <img src="assets/icons/like-dark.svg" alt="likes" class="likes_icon"></p>
+  <p class="price">${photographer.fullPrice}</p>`;
 }
 
 function photographerGalleryFactory(media: Media): string {
@@ -160,10 +204,19 @@ function photographerGalleryFactory(media: Media): string {
     : /*html*/ `<img src="${media.mediaPath}" alt="${media.title}">`;
   const html =
     /*html*/
-    `<article data-id="${media.id}" tabindex="-1">
-      ${mediaElement}
-       <h3>${media.title}</h3>
-         <p class="likes"></p>
+    `<article data-id="${media.id}">
+      <button class="media_trigger" aria-label="Voir ${media.title} en grand">
+        ${mediaElement}
+      </button>
+      <div class="media_footer">
+        <h3>${media.title}</h3>
+        <p class="likes">
+          <span class="likes_count">${media.likes}</span>
+          <button class="like_button" aria-label="Liker ${media.title}">
+            <img src="assets/icons/like.svg" alt="likes" class="like_icon">
+          </button>
+        </p>
+      </div>
      </article>`;
   return html;
 }

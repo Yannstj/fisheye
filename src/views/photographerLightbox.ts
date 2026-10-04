@@ -42,7 +42,24 @@ export function displayLightbox(medias: Media[]): void {
     if (keyboardEvent.key === "ArrowRight") goToNext();
     if (keyboardEvent.key === "ArrowLeft") goToPrevious();
     if (keyboardEvent.key === "Escape") closeLightbox();
+    if (keyboardEvent.key === "Tab") trapFocus(keyboardEvent);
   });
+
+  function trapFocus(event: KeyboardEvent): void {
+    const focusableElements = container!.querySelectorAll<HTMLElement>(
+      ".lightbox_close, .carrousel_prev, .carrousel_next",
+    );
+    const first = focusableElements[0];
+    const last = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
 }
 
 export function getNextMediaId(medias: Media[], currentId: number): number {
@@ -72,7 +89,7 @@ export function photographerLightboxTemplate(medias: Media[]): string {
   return /*html*/ `<div class="carrousel_wrapper">
                      <button class="lightbox_close" aria-label="Fermer la visionneuse">×</button>
                      <button class="carrousel_prev" aria-label="Image précédente"></button>
-                     <ul class="carrousel">
+                     <ul class="carrousel" aria-label="Visionneuse de médias">
                       ${medias.map((media) => carouselItem(media)).join("")}
                      </ul>
                      <button class="carrousel_next" aria-label="Image suivante"></button>

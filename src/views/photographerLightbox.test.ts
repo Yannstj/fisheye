@@ -83,6 +83,70 @@ describe("#Lightbox View", () => {
     );
   });
 
+  it("hides lightbox and restores aria-hidden on Escape keydown", () => {
+    document.body.innerHTML = `
+      <main id="main" aria-hidden="true"></main>
+      <div class="photographer_lightbox"></div>
+    `;
+    displayLightbox(medias);
+
+    const container = document.querySelector(
+      ".photographer_lightbox",
+    ) as HTMLElement;
+    container.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+
+    expect(container.hasAttribute("hidden")).toBe(true);
+    expect(document.getElementById("main")?.getAttribute("aria-hidden")).toBe(
+      "false",
+    );
+  });
+
+  it("traps focus: Tab on the last focusable element moves to the first", () => {
+    document.body.innerHTML = '<div class="photographer_lightbox"></div>';
+    displayLightbox(medias);
+
+    const container = document.querySelector(
+      ".photographer_lightbox",
+    ) as HTMLElement;
+    const closeButton = container.querySelector(
+      ".lightbox_close",
+    ) as HTMLElement;
+    const nextButton = container.querySelector(
+      ".carrousel_next",
+    ) as HTMLElement;
+
+    nextButton.focus();
+    container.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Tab", bubbles: true }),
+    );
+
+    expect(document.activeElement).toBe(closeButton);
+  });
+
+  it("traps focus: Shift+Tab on the first focusable element moves to the last", () => {
+    document.body.innerHTML = '<div class="photographer_lightbox"></div>';
+    displayLightbox(medias);
+
+    const container = document.querySelector(
+      ".photographer_lightbox",
+    ) as HTMLElement;
+    const closeButton = container.querySelector(
+      ".lightbox_close",
+    ) as HTMLElement;
+    const nextButton = container.querySelector(
+      ".carrousel_next",
+    ) as HTMLElement;
+
+    closeButton.focus();
+    container.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Tab", shiftKey: true, bubbles: true }),
+    );
+
+    expect(document.activeElement).toBe(nextButton);
+  });
+
   it("renders an image for image type media", () => {
     const result = carouselItem(medias[0]);
 
@@ -100,6 +164,15 @@ describe("#Lightbox View", () => {
     const result = carouselItem(medias[0]);
 
     expect(result).toContain("Photo 1");
+  });
+
+  it("has an aria-label on the carousel list", () => {
+    document.body.innerHTML = photographerLightboxTemplate(medias);
+
+    const carousel = document.querySelector(".carrousel");
+    expect(carousel?.getAttribute("aria-label")).toBe(
+      "Visionneuse de médias",
+    );
   });
 
   it("renders prev and next buttons with aria-labels", () => {
