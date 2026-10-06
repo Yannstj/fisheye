@@ -7,7 +7,7 @@
   margin-right: 100px;
   &_details {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     padding: 42px;
   }
@@ -43,18 +43,88 @@
 
 .photographer_filter {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
   margin-top: 27px;
   margin-left: 100px;
   margin-right: 100px;
   gap: 22px;
-  // {
-  //   margin-left: 13px;
-  //   width: 160px;
-  //   height: 40px;
-  //   padding-left: 8px;
-  //   text-align: left;
-  //   background-color: #901c1c;
-  // }
+
+  .filter_label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .dropdown_wrapper {
+    position: relative;
+  }
+
+  #dropdown_button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #901c1c;
+    color: white;
+    border: none;
+    width: 160px;
+    height: 40px;
+    padding: 0 15px;
+    text-align: left;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+
+    &[aria-expanded="true"] {
+      border-radius: 5px 5px 0 0;
+    }
+
+    .dropdown_arrow {
+      width: 8px;
+      height: 8px;
+      border-style: solid;
+      border-color: white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+
+    &[aria-expanded="true"] .dropdown_arrow {
+      transform: rotate(-135deg);
+    }
+  }
+
+  #dropdown {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 160px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #901c1c;
+    border-radius: 0 0 5px 5px;
+
+    li {
+      position: relative;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 15px 20px;
+      cursor: pointer;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 20px;
+        right: 20px;
+        height: 1px;
+        background-color: rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
 }
 
 .photographer_gallery {

@@ -10,7 +10,7 @@ import {
   setActiveCarouselItem,
 } from "./photographerLightbox.js";
 
-const likedMediaIds = new Set<number>();
+const likedMediaIds = new Set<number>(); // Assure 1 like par media
 let lastTriggerElement: HTMLElement | null = null;
 let currentPhotographer: Photographer;
 let currentMedias: Media[] = [];
@@ -101,6 +101,12 @@ function photographerModal(photographer: Photographer): string {
   </div>`;
 }
 
+const SORT_OPTIONS = [
+  { value: "popularity", label: "Popularité" },
+  { value: "date", label: "Date" },
+  { value: "title", label: "Titre" },
+];
+
 function displayDropDown() {
   const container = document.querySelector(".photographer_filter");
   if (!container) {
@@ -110,13 +116,26 @@ function displayDropDown() {
 }
 
 function photographerFilter() {
-  return /*html*/ ` 
-  <button aria-haspopup="listbox" aria-expanded="false" aria-controls="dropdown" id="dropdown_button">Trier par</button>
-  <ul id="dropdown" role="listbox" class="dropdown-content" hidden>
-    <li role="option" data-sort="popularity">Popularité</li>
-    <li role="option" data-sort="date">Date</li>
-    <li role="option" data-sort="title">Titre</li>
-  </ul>`;
+  return /*html*/ `
+  <span class="filter_label">Trier par</span>
+  <div class="dropdown_wrapper">
+    <button aria-haspopup="listbox" aria-expanded="false" aria-controls="dropdown" id="dropdown_button">
+      <span class="dropdown_selected">${SORT_OPTIONS[0].label}</span>
+      <span class="dropdown_arrow"></span>
+    </button>
+    <ul id="dropdown" role="listbox" class="dropdown-content" hidden>
+      ${dropdownOptions(SORT_OPTIONS[0].value)}
+    </ul>
+  </div>`;
+}
+
+function dropdownOptions(selectedValue: string): string {
+  return SORT_OPTIONS.filter((option) => option.value !== selectedValue)
+    .map(
+      (option) =>
+        /*html*/ `<li role="option" data-sort="${option.value}">${option.label}</li>`,
+    )
+    .join("");
 }
 
 function displayFilter(photographer: Photographer, medias: Media[]) {
@@ -129,7 +148,8 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
     throw new Error("Unordored list .dropdown introuvable");
   }
   dropdownButton.addEventListener("click", () => {
-    dropdown.toggleAttribute("hidden");
+    const isHidden = dropdown.toggleAttribute("hidden");
+    dropdownButton.setAttribute("aria-expanded", String(!isHidden));
   });
 
   dropdown.addEventListener("click", (event) => {
@@ -151,6 +171,12 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
     displayMedia(photographer, sortedMedias);
     displayLightbox(sortedMedias);
     dropdown.setAttribute("hidden", "");
+    dropdownButton.setAttribute("aria-expanded", "false");
+
+    const selectedLabel = dropdownButton.querySelector(".dropdown_selected");
+    if (selectedLabel) selectedLabel.textContent = option.textContent;
+
+    if (sortBy) dropdown.innerHTML = dropdownOptions(sortBy);
   });
 }
 
@@ -225,7 +251,10 @@ function displayTotalLikes(photographer: Photographer, medias: Media[]): void {
   container.innerHTML = photographerInfos(photographer, totalLikes);
 }
 
-function photographerInfos(photographer: Photographer, totalLikes: number): string {
+function photographerInfos(
+  photographer: Photographer,
+  totalLikes: number,
+): string {
   return /*html*/ `
   <p class="total_likes">${totalLikes} <img src="assets/icons/like-dark.svg" alt="likes" class="likes_icon"></p>
   <p class="price">${photographer.fullPrice}</p>`;

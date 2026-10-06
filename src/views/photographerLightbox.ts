@@ -54,6 +54,7 @@ export function displayLightbox(medias: Media[]): void {
     });
     containerElement.dataset.keydownBound = "true";
   }
+  // checker desactivation or main (props css avec ce qui est interactifs)
 
   function trapFocus(event: KeyboardEvent): void {
     const focusableElements = container!.querySelectorAll<HTMLElement>(
