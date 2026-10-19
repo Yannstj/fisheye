@@ -127,6 +127,11 @@
       padding: 0 15px;
       cursor: pointer;
 
+      &:focus-visible {
+        outline: 3px solid white;
+        outline-offset: -6px;
+      }
+
       &::before {
         content: "";
         position: absolute;

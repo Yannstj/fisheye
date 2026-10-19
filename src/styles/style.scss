@@ -5,6 +5,11 @@ body {
   margin: 0;
 }
 
+:focus-visible {
+  outline: 3px solid #901c1c;
+  outline-offset: 2px;
+}
+
 header {
   display: flex;
   flex-direction: row;
