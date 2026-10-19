@@ -9,6 +9,7 @@ import {
   displayLightbox,
   setActiveCarouselItem,
 } from "./photographerLightbox.js";
+import { trapFocus } from "./focusTrap.js";
 
 const likedMediaIds = new Set<number>(); // Assure 1 like par media
 let lastTriggerElement: HTMLElement | null = null;
@@ -53,22 +54,34 @@ function photographerBanner(photographer: Photographer): string {
 }
 
 function displayModal(photographer: Photographer) {
-  const container = document.querySelector(".photographer_modal");
-  if (!container) {
+  const modal = document.querySelector<HTMLElement>(".photographer_modal");
+  if (!modal) {
     throw new Error("Container .photographer_modal introuvable");
   }
-  container.innerHTML = photographerModal(photographer);
+  modal.innerHTML = photographerModal(photographer);
 
-  const modal = document.querySelector(".photographer_modal");
   const contactButton = document.getElementById("contact_button");
+  const main = document.getElementById("main");
 
-  const closeButton = modal?.querySelector(".modal_close");
-  contactButton?.addEventListener("click", () => {
-    modal?.toggleAttribute("hidden");
-  });
+  function openModal(): void {
+    modal?.removeAttribute("hidden");
+    main?.setAttribute("aria-hidden", "true");
+    modal?.querySelector<HTMLElement>("#prenom")?.focus();
+  }
 
-  closeButton?.addEventListener("click", function () {
+  function closeModal(): void {
     modal?.setAttribute("hidden", "");
+    main?.setAttribute("aria-hidden", "false");
+    contactButton?.focus();
+  }
+
+  contactButton?.addEventListener("click", openModal);
+  modal
+    .querySelector(".modal_close")
+    ?.addEventListener("click", closeModal);
+  modal.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeModal();
+    if (event.key === "Tab") trapFocus(event, modal);
   });
 }
 
@@ -76,8 +89,10 @@ function photographerModal(photographer: Photographer): string {
   return /*html*/ `
   <div class="modal">
    <header>
-   <h2>Contactez-moi<br>${photographer.name}</h2>
-   <img src="assets/icons/close.svg" alt="Fermer la modale" class="modal_close">
+   <h2 id="modal_title">Contactez-moi<br>${photographer.name}</h2>
+   <button type="button" class="modal_close" aria-label="Fermer la modale">
+     <img src="assets/icons/close.svg" alt="">
+   </button>
    </header>
      <form action="" method="">
        <div>
@@ -89,7 +104,7 @@ function photographerModal(photographer: Photographer): string {
         <input type="text" id="nom" name="nom" required>
       </div>
       <div>
-        <label for="email">email</label>
+        <label for="email">Email</label>
         <input type="email" id="email" name="email" required>
       </div>
      <div>
@@ -117,13 +132,13 @@ function displayDropDown() {
 
 function photographerFilter() {
   return /*html*/ `
-  <span class="filter_label">Trier par</span>
+  <span class="filter_label" id="filter_label">Trier par</span>
   <div class="dropdown_wrapper">
     <button aria-haspopup="listbox" aria-expanded="false" aria-controls="dropdown" id="dropdown_button">
       <span class="dropdown_selected">${SORT_OPTIONS[0].label}</span>
       <span class="dropdown_arrow"></span>
     </button>
-    <ul id="dropdown" role="listbox" class="dropdown-content" hidden>
+    <ul id="dropdown" role="listbox" aria-labelledby="filter_label" class="dropdown-content" hidden>
       ${dropdownOptions(SORT_OPTIONS[0].value)}
     </ul>
   </div>`;
@@ -133,7 +148,7 @@ function dropdownOptions(selectedValue: string): string {
   return SORT_OPTIONS.filter((option) => option.value !== selectedValue)
     .map(
       (option) =>
-        /*html*/ `<li role="option" data-sort="${option.value}">${option.label}</li>`,
+        /*html*/ `<li role="option" tabindex="-1" aria-selected="false" data-sort="${option.value}">${option.label}</li>`,
     )
     .join("");
 }
@@ -147,16 +162,23 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
   if (!dropdown) {
     throw new Error("Unordored list .dropdown introuvable");
   }
-  dropdownButton.addEventListener("click", () => {
-    const isHidden = dropdown.toggleAttribute("hidden");
-    dropdownButton.setAttribute("aria-expanded", String(!isHidden));
-  });
 
-  dropdown.addEventListener("click", (event) => {
-    const target = event.target as HTMLElement;
-    const option = target.closest("[data-sort]") as HTMLElement;
-    if (!option) return;
+  function getOptions(): HTMLElement[] {
+    return Array.from(dropdown!.querySelectorAll<HTMLElement>("[data-sort]"));
+  }
 
+  function openDropdown(): void {
+    dropdown!.removeAttribute("hidden");
+    dropdownButton!.setAttribute("aria-expanded", "true");
+    getOptions()[0]?.focus();
+  }
+
+  function closeDropdown(): void {
+    dropdown!.setAttribute("hidden", "");
+    dropdownButton!.setAttribute("aria-expanded", "false");
+  }
+
+  function selectOption(option: HTMLElement): void {
     const sortBy = option.dataset.sort;
     let sortedMedias: Media[];
 
@@ -170,13 +192,54 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
 
     displayMedia(photographer, sortedMedias);
     displayLightbox(sortedMedias);
-    dropdown.setAttribute("hidden", "");
-    dropdownButton.setAttribute("aria-expanded", "false");
+    closeDropdown();
 
-    const selectedLabel = dropdownButton.querySelector(".dropdown_selected");
+    const selectedLabel = dropdownButton!.querySelector(".dropdown_selected");
     if (selectedLabel) selectedLabel.textContent = option.textContent;
 
-    if (sortBy) dropdown.innerHTML = dropdownOptions(sortBy);
+    if (sortBy) dropdown!.innerHTML = dropdownOptions(sortBy);
+    dropdownButton!.focus();
+  }
+
+  dropdownButton.addEventListener("click", () => {
+    if (dropdown.hasAttribute("hidden")) openDropdown();
+    else closeDropdown();
+  });
+
+  dropdownButton.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      openDropdown();
+    }
+    if (event.key === "Escape") closeDropdown();
+  });
+
+  dropdown.addEventListener("click", (event) => {
+    const option = (event.target as HTMLElement).closest(
+      "[data-sort]",
+    ) as HTMLElement | null;
+    if (option) selectOption(option);
+  });
+
+  dropdown.addEventListener("keydown", (event) => {
+    const options = getOptions();
+    const index = options.indexOf(document.activeElement as HTMLElement);
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      options[(index + 1) % options.length]?.focus();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      options[(index - 1 + options.length) % options.length]?.focus();
+    } else if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (index >= 0) selectOption(options[index]);
+    } else if (event.key === "Escape") {
+      closeDropdown();
+      dropdownButton.focus();
+    } else if (event.key === "Tab") {
+      closeDropdown();
+    }
   });
 }
 
@@ -214,7 +277,7 @@ function displayMedia(photographer: Photographer, medias: Media[]): void {
 
 function openLightbox(article: HTMLElement): void {
   const mediaId = Number(article.dataset.id);
-  lastTriggerElement = article;
+  lastTriggerElement = article.querySelector<HTMLElement>(".media_trigger");
 
   const lightbox = document.querySelector(".photographer_lightbox");
   const main = document.getElementById("main");
@@ -235,6 +298,8 @@ function likeMedia(article: HTMLElement): void {
 
   likedMediaIds.add(mediaId);
   media.likes += 1;
+
+  article.querySelector(".like_button")?.setAttribute("aria-pressed", "true");
 
   const likesCount = article.querySelector(".likes_count");
   if (likesCount) likesCount.textContent = String(media.likes);
@@ -275,8 +340,8 @@ function photographerGalleryFactory(media: Media): string {
         <h3>${media.title}</h3>
         <p class="likes">
           <span class="likes_count">${media.likes}</span>
-          <button class="like_button" aria-label="Liker ${media.title}">
-            <img src="assets/icons/like.svg" alt="likes" class="like_icon">
+          <button class="like_button" aria-label="Liker ${media.title}" aria-pressed="${likedMediaIds.has(media.id)}">
+            <img src="assets/icons/like.svg" alt="" class="like_icon">
           </button>
         </p>
       </div>

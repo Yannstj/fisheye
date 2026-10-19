@@ -127,6 +127,11 @@
       padding: 0 15px;
       cursor: pointer;
 
+      &:focus-visible {
+        outline: 3px solid white;
+        outline-offset: -6px;
+      }
+
       &::before {
         content: "";
         position: absolute;
@@ -259,8 +264,14 @@
       align-items: center;
       width: 100%;
       margin-bottom: 24px;
-      img {
+      .modal_close {
+        display: flex;
+        padding: 0;
+        border: none;
+        background: none;
         cursor: pointer;
+      }
+      img {
         width: 30px;
       }
       h2 {
