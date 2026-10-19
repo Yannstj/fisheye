@@ -4,7 +4,8 @@
   "description": "npm install for dependncies",
   "main": "index.js",
   "scripts": {
-    "test": "vitest --watch"
+    "test": "vitest --watch",
+    "lint": "tsc && eslint dist"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,9 @@
   },
   "homepage": "https://github.com/Yannstj/fisheye#readme",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
     "jsdom": "^29.1.1",
     "sass": "^1.101.3",
     "typescript": "^7.0.2",

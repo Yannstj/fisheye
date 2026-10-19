@@ -79,6 +79,15 @@ function displayModal(photographer: Photographer) {
   modal
     .querySelector(".modal_close")
     ?.addEventListener("click", closeModal);
+
+  // Pas d'envoi réel pour l'instant : on affiche seulement les champs saisis
+  modal.querySelector("form")?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    console.log(Object.fromEntries(new FormData(form)));
+    form.reset();
+    closeModal();
+  });
   modal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeModal();
     if (event.key === "Tab") trapFocus(event, modal);
@@ -328,7 +337,7 @@ function photographerInfos(
 function photographerGalleryFactory(media: Media): string {
   const isVideo = media.type === "video";
   const mediaElement = isVideo
-    ? /*html*/ `<video><source src="${media.mediaPath}"></video>`
+    ? /*html*/ `<video aria-label="${media.title}"><source src="${media.mediaPath}"></video>`
     : /*html*/ `<img src="${media.mediaPath}" alt="${media.title}">`;
   const html =
     /*html*/
@@ -337,7 +346,7 @@ function photographerGalleryFactory(media: Media): string {
         ${mediaElement}
       </button>
       <div class="media_footer">
-        <h3>${media.title}</h3>
+        <h2>${media.title}</h2>
         <p class="likes">
           <span class="likes_count">${media.likes}</span>
           <button class="like_button" aria-label="Liker ${media.title}" aria-pressed="${likedMediaIds.has(media.id)}">

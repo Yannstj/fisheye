@@ -73,7 +73,7 @@ export function getPreviousMediaId(medias: Media[], currentId: number): number {
 export function carouselItem(media: Media): string {
   const isVideo = media.type === "video";
   const mediaElement = isVideo
-    ? /*html*/ `<video controls=""><source src="${media.mediaPath}"></video>`
+    ? /*html*/ `<video controls="" aria-label="${media.title}"><source src="${media.mediaPath}"></video>`
     : /*html*/ `<img src="${media.mediaPath}" alt="${media.title}">`;
   return /*html*/ `<li class="carrousel_item" aria-hidden="false" id="${media.id}">
     ${mediaElement}
