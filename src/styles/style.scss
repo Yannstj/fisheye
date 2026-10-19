@@ -14,6 +14,7 @@ header {
   h1 {
     color: #901c1c;
     margin-right: 100px;
+    font-weight: 400;
   }
   .logo {
     height: 50px;
@@ -51,6 +52,7 @@ header {
       width: 200px;
       border-radius: 50%;
       object-fit: cover;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     }
     p {
       margin: 0;

@@ -13,12 +13,19 @@
   }
   h1 {
     color: #d3573c;
+    font-size: 64px;
+    font-weight: 400;
+    margin: 0;
   }
   .location {
     color: #901c1c;
+    font-size: 24px;
+    margin: 0;
   }
   .tagline {
     color: #525252;
+    font-size: 18px;
+    margin: 12px 0 0;
   }
   button {
     font-size: 20px;
@@ -37,7 +44,8 @@
     width: 200px;
     border-radius: 50%;
     object-fit: cover;
-    padding: 42px;
+    margin: 42px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   }
 }
 
@@ -68,7 +76,7 @@
     color: white;
     border: none;
     width: 160px;
-    height: 40px;
+    height: 48px;
     padding: 0 15px;
     text-align: left;
     border-radius: 5px;
@@ -97,7 +105,7 @@
 
   #dropdown {
     position: absolute;
-    top: 40px;
+    top: 48px;
     left: 0;
     width: 160px;
     list-style: none;
@@ -105,21 +113,26 @@
     padding: 0;
     background-color: #901c1c;
     border-radius: 0 0 5px 5px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
     li {
       position: relative;
       color: white;
       font-size: 16px;
       font-weight: bold;
-      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      height: 48px;
+      padding: 0 15px;
       cursor: pointer;
 
       &::before {
         content: "";
         position: absolute;
         top: 0;
-        left: 20px;
-        right: 20px;
+        left: 15px;
+        right: 15px;
         height: 1px;
         background-color: rgba(255, 255, 255, 0.4);
       }
@@ -152,15 +165,12 @@
     text-align: left;
   }
 
-  img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-  }
+  img,
   video {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 7 / 6;
     object-fit: cover;
+    border-radius: 5px;
   }
 
   .media_footer {
@@ -173,11 +183,13 @@
   h3 {
     margin: 0;
     color: #901c1c;
-    font-size: 18px;
-    font-weight: 300;
+    font-size: 24px;
+    font-weight: 400;
   }
 
   .likes {
+    color: #901c1c;
+    font-size: 24px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -253,7 +265,6 @@
       h2 {
         font-size: 44px;
         font-weight: normal;
-        text-align: center;
       }
     }
     form {
@@ -318,8 +329,8 @@
 
   .carrousel_wrapper {
     position: relative;
-    width: 50%;
-    max-width: 700px;
+    width: 75%;
+    max-width: 1050px;
   }
 
   .lightbox_close {
@@ -329,7 +340,8 @@
     border: none;
     background: none;
     color: #901c1c;
-    font-size: 48px;
+    font-size: 72px;
+    line-height: 1;
     cursor: pointer;
   }
 
@@ -346,12 +358,12 @@
     &::before {
       content: "";
       display: block;
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       margin: auto;
       border-style: solid;
       border-color: #901c1c;
-      border-width: 0 5px 5px 0;
+      border-width: 0 6px 6px 0;
     }
   }
 
@@ -385,9 +397,11 @@
 
     img,
     video {
+      display: block;
       width: 100%;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 5px;
     }
 
     .carrousel_item_title {
