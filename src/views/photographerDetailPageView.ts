@@ -9,6 +9,7 @@ import {
   displayLightbox,
   setActiveCarouselItem,
 } from "./photographerLightbox.js";
+import { trapFocus } from "./focusTrap.js";
 
 const likedMediaIds = new Set<number>(); // Assure 1 like par media
 let lastTriggerElement: HTMLElement | null = null;
@@ -53,22 +54,34 @@ function photographerBanner(photographer: Photographer): string {
 }
 
 function displayModal(photographer: Photographer) {
-  const container = document.querySelector(".photographer_modal");
-  if (!container) {
+  const modal = document.querySelector<HTMLElement>(".photographer_modal");
+  if (!modal) {
     throw new Error("Container .photographer_modal introuvable");
   }
-  container.innerHTML = photographerModal(photographer);
+  modal.innerHTML = photographerModal(photographer);
 
-  const modal = document.querySelector(".photographer_modal");
   const contactButton = document.getElementById("contact_button");
+  const main = document.getElementById("main");
 
-  const closeButton = modal?.querySelector(".modal_close");
-  contactButton?.addEventListener("click", () => {
-    modal?.toggleAttribute("hidden");
-  });
+  function openModal(): void {
+    modal?.removeAttribute("hidden");
+    main?.setAttribute("aria-hidden", "true");
+    modal?.querySelector<HTMLElement>("#prenom")?.focus();
+  }
 
-  closeButton?.addEventListener("click", function () {
+  function closeModal(): void {
     modal?.setAttribute("hidden", "");
+    main?.setAttribute("aria-hidden", "false");
+    contactButton?.focus();
+  }
+
+  contactButton?.addEventListener("click", openModal);
+  modal
+    .querySelector(".modal_close")
+    ?.addEventListener("click", closeModal);
+  modal.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeModal();
+    if (event.key === "Tab") trapFocus(event, modal);
   });
 }
 
@@ -76,8 +89,10 @@ function photographerModal(photographer: Photographer): string {
   return /*html*/ `
   <div class="modal">
    <header>
-   <h2>Contactez-moi<br>${photographer.name}</h2>
-   <img src="assets/icons/close.svg" alt="Fermer la modale" class="modal_close">
+   <h2 id="modal_title">Contactez-moi<br>${photographer.name}</h2>
+   <button type="button" class="modal_close" aria-label="Fermer la modale">
+     <img src="assets/icons/close.svg" alt="">
+   </button>
    </header>
      <form action="" method="">
        <div>
@@ -89,7 +104,7 @@ function photographerModal(photographer: Photographer): string {
         <input type="text" id="nom" name="nom" required>
       </div>
       <div>
-        <label for="email">email</label>
+        <label for="email">Email</label>
         <input type="email" id="email" name="email" required>
       </div>
      <div>

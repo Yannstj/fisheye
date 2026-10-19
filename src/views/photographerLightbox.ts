@@ -1,4 +1,5 @@
 import { Media } from "../models/media.js";
+import { trapFocus } from "./focusTrap.js";
 
 let currentMedias: Media[] = [];
 
@@ -50,26 +51,10 @@ export function displayLightbox(medias: Media[]): void {
       if (keyboardEvent.key === "ArrowRight") goToNext();
       if (keyboardEvent.key === "ArrowLeft") goToPrevious();
       if (keyboardEvent.key === "Escape") closeLightbox();
-      if (keyboardEvent.key === "Tab") trapFocus(keyboardEvent);
+      if (keyboardEvent.key === "Tab")
+        trapFocus(keyboardEvent, containerElement);
     });
     containerElement.dataset.keydownBound = "true";
-  }
-  // checker desactivation or main (props css avec ce qui est interactifs)
-
-  function trapFocus(event: KeyboardEvent): void {
-    const focusableElements = container!.querySelectorAll<HTMLElement>(
-      ".lightbox_close, .carrousel_prev, .carrousel_next",
-    );
-    const first = focusableElements[0];
-    const last = focusableElements[focusableElements.length - 1];
-
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
   }
 }
 
