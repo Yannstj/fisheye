@@ -299,6 +299,8 @@ function likeMedia(article: HTMLElement): void {
   likedMediaIds.add(mediaId);
   media.likes += 1;
 
+  article.querySelector(".like_button")?.setAttribute("aria-pressed", "true");
+
   const likesCount = article.querySelector(".likes_count");
   if (likesCount) likesCount.textContent = String(media.likes);
 
@@ -338,8 +340,8 @@ function photographerGalleryFactory(media: Media): string {
         <h3>${media.title}</h3>
         <p class="likes">
           <span class="likes_count">${media.likes}</span>
-          <button class="like_button" aria-label="Liker ${media.title}">
-            <img src="assets/icons/like.svg" alt="likes" class="like_icon">
+          <button class="like_button" aria-label="Liker ${media.title}" aria-pressed="${likedMediaIds.has(media.id)}">
+            <img src="assets/icons/like.svg" alt="" class="like_icon">
           </button>
         </p>
       </div>
