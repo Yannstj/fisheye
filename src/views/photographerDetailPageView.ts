@@ -214,7 +214,7 @@ function displayMedia(photographer: Photographer, medias: Media[]): void {
 
 function openLightbox(article: HTMLElement): void {
   const mediaId = Number(article.dataset.id);
-  lastTriggerElement = article;
+  lastTriggerElement = article.querySelector<HTMLElement>(".media_trigger");
 
   const lightbox = document.querySelector(".photographer_lightbox");
   const main = document.getElementById("main");
