@@ -9,21 +9,21 @@ npm install
 ## Compilation (TypeScript + Sass)
 
 ```bash
-task dev
+task
 ```
 
 Lance la compilation en watch de `src/**/*.ts` vers `dist/` et de `src/styles/*.scss` vers `dist/`.
+
+## Lint
+
+```bash
+task lint
+```
 
 ## Tests
 
 ```bash
 task test
-```
-
-## Lint
-
-```bash
-npm run lint
 ```
 
 Compile le TypeScript puis lance ESLint (config par défaut) sur le JS généré dans `dist/`.

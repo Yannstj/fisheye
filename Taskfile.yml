@@ -1,11 +1,17 @@
 version: "3"
 
 tasks:
+  default:
+    desc: "Compile at change"
+    cmd: task trigger
   watch:ts:
     cmd: npx tsc --watch
   watch:sass:
     cmd: npx sass --watch src/styles:dist
-  dev:
+  trigger:
     deps: [watch:ts, watch:sass]
   test:
     cmd: npm run test
+  lint:
+    cmd: npm run lint
+silent: true
