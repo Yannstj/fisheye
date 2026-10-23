@@ -11,22 +11,19 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300..700&display=swap"
       rel="stylesheet" />
     <title>Fisheye - photographe</title>
-    <script src="dist/photographerPage.js" type="module" defer></script>
+    <script src="dist/photographerPage.js" type="module"></script>
   </head>
   <body>
     <header>
       <a href="index.html">
-        <img
-          src="assets/images/logo.png"
-          class="logo"
-          alt="Fisheye - Accueil"
+        <img src="assets/images/logo.png" class="logo" alt="Fisheye - Accueil"
       /></a>
     </header>
     <main id="main">
-      <div class="photographer_banner"></div>
-      <div class="photographer_filter"></div>
-      <div class="photographer_gallery"></div>
-      <div class="photographer_infos"></div>
+      <section class="photographer_banner"></section>
+      <section class="photographer_filter" aria-label="Tri des médias"></section>
+      <section class="photographer_gallery" aria-label="Galerie du photographe"></section>
+      <section class="photographer_infos" aria-label="Likes et tarif"></section>
     </main>
     <div
       class="photographer_modal"

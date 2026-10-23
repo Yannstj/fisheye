@@ -5,11 +5,11 @@ import {
   sortMediaByTitle,
 } from "../models/mediaModel.js";
 import { Photographer } from "../models/photographer.js";
+import { trapFocus } from "./focusTrap.js";
 import {
   displayLightbox,
   setActiveCarouselItem,
 } from "./photographerLightbox.js";
-import { trapFocus } from "./focusTrap.js";
 
 const likedMediaIds = new Set<number>(); // Assure 1 like par media
 let lastTriggerElement: HTMLElement | null = null;
@@ -76,9 +76,7 @@ function displayModal(photographer: Photographer) {
   }
 
   contactButton?.addEventListener("click", openModal);
-  modal
-    .querySelector(".modal_close")
-    ?.addEventListener("click", closeModal);
+  modal.querySelector(".modal_close")?.addEventListener("click", closeModal);
 
   // Pas d'envoi réel pour l'instant : on affiche seulement les champs saisis
   modal.querySelector("form")?.addEventListener("submit", (event) => {
@@ -147,7 +145,7 @@ function photographerFilter() {
       <span class="dropdown_selected">${SORT_OPTIONS[0].label}</span>
       <span class="dropdown_arrow"></span>
     </button>
-    <ul id="dropdown" role="listbox" aria-labelledby="filter_label" class="dropdown-content" hidden>
+    <ul id="dropdown" role="listbox" aria-labelledby="filter_label" hidden>
       ${dropdownOptions(SORT_OPTIONS[0].value)}
     </ul>
   </div>`;
