@@ -4,6 +4,7 @@ import {
   getPhotographerById,
   getPhotographers,
 } from "../models/photographerModel.js";
+import { renderNotFoundPage } from "../views/notFoundView.js";
 import { renderDetailPhotographerPage } from "../views/photographerDetailPageView.js";
 
 export async function initPhotographerPage(): Promise<void> {
@@ -13,7 +14,8 @@ export async function initPhotographerPage(): Promise<void> {
   const photographers = getPhotographers(fisheyeData.photographers);
   const photographer = getPhotographerById(photographers, photographerId);
   if (!photographer) {
-    throw new Error("Photographe introuvable");
+    renderNotFoundPage();
+    return;
   }
 
   const media = getMediaByPhotographerId(

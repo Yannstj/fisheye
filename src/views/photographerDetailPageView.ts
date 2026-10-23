@@ -12,7 +12,9 @@ import {
 } from "./photographerLightbox.js";
 
 const likedMediaIds = new Set<number>(); // Assure 1 like par media
+// élément qui a ouvert la lightbox : on lui rend le focus à la fermeture
 let lastTriggerElement: HTMLElement | null = null;
+// état courant (photographe + liste triée) lu par les handlers de likes
 let currentPhotographer: Photographer;
 let currentMedias: Media[] = [];
 
@@ -20,6 +22,7 @@ export function renderDetailPhotographerPage(
   photographer: Photographer,
   medias: Media[],
 ): void {
+  // le HTML du dropdown doit exister avant que displayFilter y branche ses listeners
   displayHeader(photographer);
   displayDropDown();
   displayFilter(photographer, medias);
@@ -65,6 +68,7 @@ function displayModal(photographer: Photographer) {
 
   function openModal(): void {
     modal?.removeAttribute("hidden");
+    // le reste de la page devient inerte pour les lecteurs d'écran
     main?.setAttribute("aria-hidden", "true");
     modal?.querySelector<HTMLElement>("#prenom")?.focus();
   }
@@ -72,6 +76,7 @@ function displayModal(photographer: Photographer) {
   function closeModal(): void {
     modal?.setAttribute("hidden", "");
     main?.setAttribute("aria-hidden", "false");
+    // le focus revient sur le bouton qui a ouvert la modale
     contactButton?.focus();
   }
 
@@ -88,6 +93,7 @@ function displayModal(photographer: Photographer) {
   });
   modal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeModal();
+    // Tab reste dans la modale (focus trap)
     if (event.key === "Tab") trapFocus(event, modal);
   });
 }
@@ -151,6 +157,7 @@ function photographerFilter() {
   </div>`;
 }
 
+// la liste ne propose que les options non sélectionnées : la sélection courante est dans le bouton
 function dropdownOptions(selectedValue: string): string {
   return SORT_OPTIONS.filter((option) => option.value !== selectedValue)
     .map(
@@ -189,6 +196,7 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
     const sortBy = option.dataset.sort;
     let sortedMedias: Media[];
 
+    // les fonctions de tri renvoient une copie : `medias` d'origine reste intacte
     if (sortBy === "popularity") {
       sortedMedias = sortMediaByPopularity(medias);
     } else if (sortBy === "date") {
@@ -197,6 +205,7 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
       sortedMedias = sortMediaByTitle(medias);
     }
 
+    // la lightbox est régénérée pour que les flèches suivent le nouvel ordre
     displayMedia(photographer, sortedMedias);
     displayLightbox(sortedMedias);
     closeDropdown();
@@ -204,6 +213,7 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
     const selectedLabel = dropdownButton!.querySelector(".dropdown_selected");
     if (selectedLabel) selectedLabel.textContent = option.textContent;
 
+    // la liste est reconstruite sans l'option qui vient d'être choisie
     if (sortBy) dropdown!.innerHTML = dropdownOptions(sortBy);
     dropdownButton!.focus();
   }
@@ -221,6 +231,7 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
     if (event.key === "Escape") closeDropdown();
   });
 
+  // délégation d'événement : un seul listener, car les <li> sont recréés à chaque tri
   dropdown.addEventListener("click", (event) => {
     const option = (event.target as HTMLElement).closest(
       "[data-sort]",
@@ -234,6 +245,7 @@ function displayFilter(photographer: Photographer, medias: Media[]) {
 
     if (event.key === "ArrowDown") {
       event.preventDefault();
+      // le modulo fait boucler la navigation (dernier → premier)
       options[(index + 1) % options.length]?.focus();
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
@@ -262,12 +274,14 @@ function displayMedia(photographer: Photographer, medias: Media[]): void {
     .map((media) => photographerGalleryFactory(media))
     .join("");
 
+  // displayMedia est rappelée à chaque tri : on ne branche le listener qu'une fois
   const containerElement = container as HTMLElement;
   if (containerElement.dataset.clickBound) return;
   containerElement.dataset.clickBound = "true";
 
   containerElement.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
+    // délégation : on retrouve l'article cliqué via son data-id
     const article = target.closest("[data-id]") as HTMLElement;
     if (!article) return;
 
@@ -298,6 +312,7 @@ function openLightbox(article: HTMLElement): void {
 
 function likeMedia(article: HTMLElement): void {
   const mediaId = Number(article.dataset.id);
+  // déjà liké : on sort avant d'incrémenter (1 like max par média)
   if (likedMediaIds.has(mediaId)) return;
 
   const media = currentMedias.find((candidate) => candidate.id === mediaId);
@@ -311,6 +326,7 @@ function likeMedia(article: HTMLElement): void {
   const likesCount = article.querySelector(".likes_count");
   if (likesCount) likesCount.textContent = String(media.likes);
 
+  // le total est recalculé depuis les médias plutôt qu'incrémenté à la main
   displayTotalLikes(currentPhotographer, currentMedias);
 }
 
@@ -332,6 +348,7 @@ function photographerInfos(
   <p class="price">${photographer.fullPrice}</p>`;
 }
 
+// choisit la balise selon le type du média (image ou vidéo)
 function photographerGalleryFactory(media: Media): string {
   const isVideo = media.type === "video";
   const mediaElement = isVideo

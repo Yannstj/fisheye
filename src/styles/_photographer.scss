@@ -1,3 +1,5 @@
+@use "mixins" as *;
+
 .photographer_banner {
   display: flex;
   justify-content: space-between;
@@ -28,16 +30,7 @@
     margin: 12px 0 0;
   }
   button {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    padding: 11px;
-    width: 170px;
-    height: 70px;
-    border: none;
-    background-color: #901c1c;
-    border-radius: 5px;
-    cursor: pointer;
+    @include button-primary;
   }
   img {
     height: 200px;
@@ -84,10 +77,6 @@
     font-size: 16px;
     font-weight: bold;
 
-    &[aria-expanded="true"] {
-      border-radius: 5px 5px 0 0;
-    }
-
     .dropdown_arrow {
       width: 8px;
       height: 8px;
@@ -98,8 +87,12 @@
       transition: transform 0.2s ease;
     }
 
-    &[aria-expanded="true"] .dropdown_arrow {
-      transform: rotate(-135deg);
+    &[aria-expanded="true"] {
+      border-radius: 5px 5px 0 0;
+
+      .dropdown_arrow {
+        transform: rotate(-135deg);
+      }
     }
   }
 
@@ -152,7 +145,6 @@
   margin-left: 100px;
   margin-right: 100px;
   gap: 64px;
-  //padding: 0;
 
   article {
     width: 100%;
@@ -183,31 +175,31 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-  }
 
-  h2 {
-    margin: 0;
-    color: #901c1c;
-    font-size: 24px;
-    font-weight: 400;
-  }
+    h2 {
+      margin: 0;
+      color: #901c1c;
+      font-size: 24px;
+      font-weight: 400;
+    }
 
-  .likes {
-    color: #901c1c;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+    .likes {
+      color: #901c1c;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
-  .like_button {
-    border: none;
-    background: none;
-    cursor: pointer;
+      .like_button {
+        border: none;
+        background: none;
+        cursor: pointer;
 
-    .like_icon {
-      width: 20px;
-      height: 20px;
+        .like_icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
     }
   }
 }
@@ -248,6 +240,7 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
+
   .modal {
     border-radius: 5px;
     background-color: #db8876;
@@ -258,12 +251,14 @@
     align-items: center;
     justify-content: space-between;
     padding: 35px;
+
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       margin-bottom: 24px;
+
       .modal_close {
         display: flex;
         padding: 0;
@@ -271,19 +266,23 @@
         background: none;
         cursor: pointer;
       }
+
       img {
         width: 30px;
       }
+
       h2 {
         font-size: 44px;
         font-weight: normal;
       }
     }
+
     form {
       display: flex;
       width: 100%;
       flex-direction: column;
       align-items: flex-start;
+
       div {
         display: flex;
         flex-direction: column;
@@ -291,10 +290,12 @@
         align-items: self-start;
         margin-bottom: 26px;
       }
+
       label {
         color: #312e2e;
         font-size: 24px;
       }
+
       input,
       textarea {
         width: 100%;
@@ -302,27 +303,22 @@
         border-radius: 5px;
         font-family: inherit;
       }
+
       input {
         height: 68px;
       }
+
       textarea {
         padding: 8px;
         resize: vertical;
       }
+
       button {
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
-        padding: 11px;
-        width: 170px;
-        height: 70px;
-        border: none;
-        background-color: #901c1c;
-        border-radius: 5px;
-        cursor: pointer;
+        @include button-primary;
       }
     }
   }
+
   &[hidden] {
     display: none;
   }
@@ -399,27 +395,28 @@
     list-style: none;
     margin: 0;
     padding: 0;
-  }
 
-  .carrousel_item {
-    display: none;
-    &.active {
-      display: block;
-    }
+    &_item {
+      display: none;
 
-    img,
-    video {
-      display: block;
-      width: 100%;
-      max-height: 80vh;
-      object-fit: contain;
-      border-radius: 5px;
-    }
+      &.active {
+        display: block;
+      }
 
-    .carrousel_item_title {
-      color: #901c1c;
-      font-size: 20px;
-      margin-top: 10px;
+      img,
+      video {
+        display: block;
+        width: 100%;
+        max-height: 80vh;
+        object-fit: contain;
+        border-radius: 5px;
+      }
+
+      &_title {
+        color: #901c1c;
+        font-size: 20px;
+        margin-top: 10px;
+      }
     }
   }
 
